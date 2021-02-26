@@ -19,7 +19,7 @@ public class CarService {
 	
 	
 	public List<Car> getCars(){
-		TypedQuery <Car>  query = em.createNamedQuery("FindAllCars", Car.class);
+		TypedQuery <Car>  query = em.createNamedQuery("FindCars", Car.class);
 		return query.getResultList();
 		
 	}

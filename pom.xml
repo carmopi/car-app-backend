@@ -17,7 +17,14 @@
 			<version>6.0.0.Alpha6</version>
 
 		</dependency>
-
+		
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>8.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -26,12 +33,7 @@
 
 
 
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>8.0.1</version>
-			<scope>provided</scope>
-		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
