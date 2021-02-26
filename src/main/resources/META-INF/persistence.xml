@@ -20,7 +20,20 @@
 				value="jdbc:postgresql://localhost:5432/postgres" />
 			<property name="javax.persistence.jdbc.user"
 				value="postgres" />
-			<property name="javax.persistence.jdbc.password" value="179405"/></properties>
+			<property name="javax.persistence.jdbc.password"
+				value="179405" />
+
+			
+			<property name="javax.persistence.sql-load-script-source"
+				value="data.sql" />
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.dialect"
+				value="org.hibernate.dialect.PostgreSQLDialect" />
+			
+
+
+
+		</properties>
 	</persistence-unit>
 
 </persistence>
