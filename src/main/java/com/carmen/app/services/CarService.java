@@ -45,7 +45,7 @@ public class CarService {
 	}
 	
 	public void deleteCar(UUID id) {
-		Car car = this.getCar(id);
+		Car car = em.find(Car.class, id);
 		em.remove(car);
 	}
 	
