@@ -1,8 +1,9 @@
 package com.carmen.app.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,36 +26,36 @@ public class Car implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
-	@Column(name = "BRAND_CAR")
+	@Column(name = "brand_car")
 	private String brand;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "Registration date")
-	private Date registration;
+	@Column(name ="registration_date")
+	private LocalDateTime registration;
 	
-	@Column(name = "Country")
+	@Column(name = "country")
 	private String country;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "Created")
-	private Date created_at;
+	@Column(name = "created")
+	private LocalDateTime created_at;
 	
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "Last Update")
-	private Date last_update;
+	@Column(name = "last_Update")
+	private LocalDateTime last_update;
 	
 	
 	public Car () {	
 		
 	}
 	
-	public Car(UUID id, String brand, Date registration, String country, Date created_at, Date last_update) {
+	public Car(String brand, LocalDateTime registration, String country, LocalDateTime created_at, LocalDateTime last_update) {
 		this.brand = brand;
-		this.registration = new Date(); 
+		this.registration = registration; 
 		this.country = country;
-		this.created_at = new Date();
-		this.last_update = new Date();
+		this.created_at = created_at;
+		this.last_update = last_update;
 		
 	
 	}
@@ -79,12 +80,12 @@ public class Car implements Serializable {
 	}
 	
 	
-	public Date getRegistration() {
+	public LocalDateTime getRegistration() {
 		return registration;
 	}
 	
 	
-	public void setRegistration(Date registration) {
+	public void setRegistration(LocalDateTime registration) {
 		this.registration = registration;
 	}
 	
@@ -99,22 +100,22 @@ public class Car implements Serializable {
 	}
 	
 	
-	public Date getCreated_at() {
+	public LocalDateTime getCreated_at() {
 		return created_at;
 	}
 	
 	
-	public void setCreated_at(Date created_at) {
+	public void setCreated_at(LocalDateTime created_at) {
 		this.created_at = created_at;
 	}
 	
 	
-	public Date getLast_update() {
+	public LocalDateTime getLast_update() {
 		return last_update;
 	}
 	
 	
-	public void setLast_update(Date last_update) {
+	public void setLast_update(LocalDateTime last_update) {
 		this.last_update = last_update;
 	}
 
