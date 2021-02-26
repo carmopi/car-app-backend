@@ -1,23 +1,31 @@
 package com.carmen.app.services;
 
+import java.util.List;
 import java.util.UUID;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
+import javax.persistence.TypedQuery;
 
 import com.carmen.app.entities.Car;
 
+@Stateless
 public class CarService {
 
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("carP");
 	private EntityManager em = emf.createEntityManager(); 
 	
-	private Car car = new Car();
+	
+	public List<Car> getCars(){
+		TypedQuery <Car>  query = em.createNamedQuery("FindAllCars", Car.class);
+		return query.getResultList();
+		
+	}
 	
 	public Car getCar(UUID id) {
-	 em.find(Car.class, id);
+		Car car =  em.find(Car.class, id);
 		if(car != null) {
 			return car;
 		}
@@ -30,13 +38,14 @@ public class CarService {
 	
 	}
 	
-	public void updateCar(UUID id) {
-	em.find(Car.class, id);
+	public void updateCar(Car car) {
+		getCar(car.getId());
 		em.merge(car);
+		
 	}
 	
 	public void deleteCar(UUID id) {
-		em.find(Car.class, id);
+		Car car = this.getCar(id);
 		em.remove(car);
 	}
 	

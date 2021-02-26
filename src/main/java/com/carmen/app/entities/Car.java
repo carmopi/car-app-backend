@@ -11,8 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
+//import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 
 @Entity
@@ -29,20 +32,22 @@ public class Car implements Serializable {
 	@Column(name = "brand_car")
 	private String brand;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name ="registration_date")
 	private LocalDateTime registration;
 	
 	@Column(name = "country")
 	private String country;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created")
+	@CreationTimestamp
 	private LocalDateTime created_at;
 	
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "last_Update")
+	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "last_update")
+	@UpdateTimestamp
 	private LocalDateTime last_update;
 	
 	
@@ -50,12 +55,11 @@ public class Car implements Serializable {
 		
 	}
 	
-	public Car(String brand, LocalDateTime registration, String country, LocalDateTime created_at, LocalDateTime last_update) {
+	public Car(String brand, LocalDateTime registration, String country) {
 		this.brand = brand;
 		this.registration = registration; 
 		this.country = country;
-		this.created_at = created_at;
-		this.last_update = last_update;
+	
 		
 	
 	}
