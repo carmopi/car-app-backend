@@ -10,6 +10,7 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import com.carmen.app.entities.Car;
+import com.carmen.app.exceptions.CarNotFoundException;
 
 @Stateless
 public class CarService {
@@ -19,34 +20,40 @@ public class CarService {
 	
 	
 	public List<Car> getCars(){
-		TypedQuery <Car>  query = em.createNamedQuery("FindCars", Car.class);
+		TypedQuery <Car>  query = this.em.createNamedQuery("FindCars", Car.class);
 		return query.getResultList();
 		
 	}
 	
-	public Car getCar(UUID id) {
-		Car car =  em.find(Car.class, id);
-		if(car != null) {
-			return car;
+	public Car getCar(UUID id) throws CarNotFoundException{
+		Car car =  this.em.find(Car.class, id);
+		if(car == null) {
+			throw new CarNotFoundException("Car with id " + id + " not found");
 		}
-	return null;
+		return car;
+		
 	}
 	
 	
 	public void createCar(Car car) {
-		em.persist(car);
+		this.em.persist(car);
 	
 	}
 	
-	public void updateCar(Car car) {
-		getCar(car.getId());
-		em.merge(car);
+	public void updateCar(Car car) throws CarNotFoundException {
+		Car car_update = getCar(car.getId());
+		this.em.merge(car_update);
+
+	}
+	
+	public void deleteCar(UUID id) throws CarNotFoundException{
+		Car car = this.em.find(Car.class, id);
+		if(car == null) {
+			throw new CarNotFoundException("Car with id " + id + " not found");
+
+		}
 		
-	}
-	
-	public void deleteCar(UUID id) {
-		Car car = em.find(Car.class, id);
-		em.remove(car);
+		this.em.remove(car);
 	}
 	
 	

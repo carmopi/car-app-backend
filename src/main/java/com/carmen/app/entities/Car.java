@@ -61,9 +61,7 @@ public class Car implements Serializable {
 		this.brand = brand;
 		this.registration = registration; 
 		this.country = country;
-	
-		
-	
+
 	}
 	
 	public UUID getId() {
