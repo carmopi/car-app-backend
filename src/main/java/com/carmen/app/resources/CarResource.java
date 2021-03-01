@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.carmen.app.services.CarService;
+import com.carmen.app.control.CarService;
 import com.carmen.app.entities.Car;
 import com.carmen.app.exceptions.CarNotFoundException;
 
