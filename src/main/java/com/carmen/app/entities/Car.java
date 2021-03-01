@@ -21,7 +21,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "cars")
-@NamedQuery(name = "FindCars", query ="SELECT a FROM Car a")
+@NamedQuery(name = "Car.FindCars", query ="SELECT a FROM Car a")
 public class Car implements Serializable {
 	
 	
@@ -44,13 +44,13 @@ public class Car implements Serializable {
 	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created")
 	@CreationTimestamp
-	private LocalDateTime created_at;
+	private LocalDateTime createdAt;
 	
 	
 	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "last_update")
 	@UpdateTimestamp
-	private LocalDateTime last_update;
+	private LocalDateTime lastUpdate;
 	
 	
 	public Car () {	
@@ -104,29 +104,29 @@ public class Car implements Serializable {
 	}
 	
 	
-	public LocalDateTime getCreated_at() {
-		return created_at;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 	
 	
-	public void setCreated_at(LocalDateTime created_at) {
-		this.created_at = created_at;
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
 	
 	
-	public LocalDateTime getLast_update() {
-		return last_update;
+	public LocalDateTime getLastUpdate() {
+		return lastUpdate;
 	}
 	
 	
-	public void setLast_update(LocalDateTime last_update) {
-		this.last_update = last_update;
+	public void setLast_update(LocalDateTime lastUpdate) {
+		this.lastUpdate = lastUpdate;
 	}
 
 	@Override
 	public String toString() {
 		return "Car [id=" + id + ", brand=" + brand + ", registration=" + registration + ", country=" + country
-				+ ", created_at=" + created_at + ", last_update=" + last_update + "]";
+				+ ", createdAt=" + createdAt + ", lastUpdate=" + lastUpdate + "]";
 	}
 	
 	

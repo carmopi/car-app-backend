@@ -20,7 +20,7 @@ public class CarService {
 	
 	
 	public List<Car> getCars(){
-		TypedQuery <Car>  query = this.em.createNamedQuery("FindCars", Car.class);
+		TypedQuery <Car>  query = this.em.createNamedQuery("Car.FindCars", Car.class);
 		return query.getResultList();
 		
 	}
@@ -47,7 +47,7 @@ public class CarService {
 	}
 	
 	public void deleteCar(UUID id) throws CarNotFoundException{
-		Car car = this.em.find(Car.class, id);
+		Car car = this.getCar(id);
 		if(car == null) {
 			throw new CarNotFoundException("Car with id " + id + " not found");
 
