@@ -48,14 +48,6 @@ public class CarService {
 	
 	public void deleteCar(UUID id) throws CarNotFoundException{
 		Car car = this.getCar(id);
-<<<<<<<< HEAD:src/main/java/com/carmen/app/control/CarService.java
-========
-		if(car == null) {
-			throw new CarNotFoundException("Car with id " + id + " not found");
-
-		}
->>>>>>>> master:src/main/java/com/carmen/app/services/CarService.java
-		
 		this.em.remove(car);
 	}
 	

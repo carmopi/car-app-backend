@@ -3,7 +3,6 @@ package com.carmen.app.boundary;
 import java.util.List;
 import java.util.UUID;
 
-import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
