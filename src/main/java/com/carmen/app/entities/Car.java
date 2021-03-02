@@ -1,21 +1,27 @@
 package com.carmen.app.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+//import javax.persistence.Temporal;
+//import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 
 @Entity
 @Table(name = "cars")
+@NamedQuery(name = "Car.FindCars", query ="SELECT a FROM Car a")
 public class Car implements Serializable {
 	
 	
@@ -25,38 +31,37 @@ public class Car implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
-	@Column(name = "BRAND_CAR")
+	@Column(name = "brand_car")
 	private String brand;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "Registration date")
-	private Date registration;
+	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name ="registration_date")
+	private LocalDateTime registration;
 	
-	@Column(name = "Country")
+	@Column(name = "country")
 	private String country;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "Created")
-	private Date created_at;
+	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "created")
+	@CreationTimestamp
+	private LocalDateTime createdAt;
 	
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "Last Update")
-	private Date last_update;
+	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "last_update")
+	@UpdateTimestamp
+	private LocalDateTime lastUpdate;
 	
 	
 	public Car () {	
 		
 	}
 	
-	public Car(UUID id, String brand, Date registration, String country, Date created_at, Date last_update) {
+	public Car(String brand, LocalDateTime registration, String country) {
 		this.brand = brand;
-		this.registration = new Date(); 
+		this.registration = registration; 
 		this.country = country;
-		this.created_at = new Date();
-		this.last_update = new Date();
-		
-	
+
 	}
 	
 	public UUID getId() {
@@ -79,12 +84,12 @@ public class Car implements Serializable {
 	}
 	
 	
-	public Date getRegistration() {
+	public LocalDateTime getRegistration() {
 		return registration;
 	}
 	
 	
-	public void setRegistration(Date registration) {
+	public void setRegistration(LocalDateTime registration) {
 		this.registration = registration;
 	}
 	
@@ -99,29 +104,29 @@ public class Car implements Serializable {
 	}
 	
 	
-	public Date getCreated_at() {
-		return created_at;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 	
 	
-	public void setCreated_at(Date created_at) {
-		this.created_at = created_at;
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
 	
 	
-	public Date getLast_update() {
-		return last_update;
+	public LocalDateTime getLastUpdate() {
+		return lastUpdate;
 	}
 	
 	
-	public void setLast_update(Date last_update) {
-		this.last_update = last_update;
+	public void setLast_update(LocalDateTime lastUpdate) {
+		this.lastUpdate = lastUpdate;
 	}
 
 	@Override
 	public String toString() {
 		return "Car [id=" + id + ", brand=" + brand + ", registration=" + registration + ", country=" + country
-				+ ", created_at=" + created_at + ", last_update=" + last_update + "]";
+				+ ", createdAt=" + createdAt + ", lastUpdate=" + lastUpdate + "]";
 	}
 	
 	

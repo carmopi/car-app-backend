@@ -1,4 +1,4 @@
-package com.carmen.app.services;
+package com.carmen.app.control;
 
 import java.util.List;
 import java.util.UUID;
@@ -48,11 +48,6 @@ public class CarService {
 	
 	public void deleteCar(UUID id) throws CarNotFoundException{
 		Car car = this.getCar(id);
-		if(car == null) {
-			throw new CarNotFoundException("Car with id " + id + " not found");
-
-		}
-		
 		this.em.remove(car);
 	}
 	
