@@ -1,8 +1,9 @@
-package com.carmen.app.resources;
+package com.carmen.app.boundary;
 
 import java.util.List;
 import java.util.UUID;
 
+import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -20,12 +21,14 @@ import com.carmen.app.control.CarService;
 import com.carmen.app.entities.Car;
 import com.carmen.app.exceptions.CarNotFoundException;
 
+
 @Path("/cars")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class CarResource {
-
-	private CarService carService;
+public class CarResource{
+	
+	
+	private CarService carService = new CarService();
 
 	@GET
 	public List<Car> getCars() {
@@ -50,12 +53,12 @@ public class CarResource {
 
 	@PUT
 	@Path("/{id}")
-	public Response updateCar(@PathParam("id") UUID id, Car car) {
+	public Response updateCar(@PathParam("id") UUID id) {
 		try {
 			Car newCar = this.carService.getCar(id);
-			newCar.setBrand(car.getBrand());
-			newCar.setCountry(car.getCountry());
-			newCar.setRegistration(car.getRegistration());
+			//newCar.setBrand(car.getBrand());
+			//newCar.setCountry(car.getCountry());
+			//newCar.setRegistration(car.getRegistration());
 
 			this.carService.updateCar(newCar);
 

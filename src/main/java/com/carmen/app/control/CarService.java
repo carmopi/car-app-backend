@@ -41,8 +41,8 @@ public class CarService {
 	}
 	
 	public void updateCar(Car car) throws CarNotFoundException {
-		Car car_update = getCar(car.getId());
-		this.em.merge(car_update);
+		Car carUpdate = getCar(car.getId());
+		this.em.merge(carUpdate);
 
 	}
 	

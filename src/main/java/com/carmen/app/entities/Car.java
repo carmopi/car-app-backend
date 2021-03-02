@@ -44,13 +44,13 @@ public class Car implements Serializable {
 	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created")
 	@CreationTimestamp
-	private LocalDateTime created_at;
+	private LocalDateTime createdAt;
 	
 	
 	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "last_update")
 	@UpdateTimestamp
-	private LocalDateTime last_update;
+	private LocalDateTime lastUpdate;
 	
 	
 	public Car () {	
@@ -105,28 +105,28 @@ public class Car implements Serializable {
 	
 	
 	public LocalDateTime getCreated_at() {
-		return created_at;
+		return createdAt;
 	}
 	
 	
-	public void setCreated_at(LocalDateTime created_at) {
-		this.created_at = created_at;
+	public void setCreated_at(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
 	
 	
 	public LocalDateTime getLast_update() {
-		return last_update;
+		return lastUpdate;
 	}
 	
 	
-	public void setLast_update(LocalDateTime last_update) {
-		this.last_update = last_update;
+	public void setLast_update(LocalDateTime lastUpdate) {
+		this.lastUpdate = lastUpdate;
 	}
 
 	@Override
 	public String toString() {
 		return "Car [id=" + id + ", brand=" + brand + ", registration=" + registration + ", country=" + country
-				+ ", created_at=" + created_at + ", last_update=" + last_update + "]";
+				+ ", created_at=" + createdAt + ", last_update=" + lastUpdate + "]";
 	}
 	
 	
