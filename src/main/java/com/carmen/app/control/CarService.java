@@ -20,7 +20,7 @@ public class CarService {
 	
 	
 	public List<Car> getCars(){
-		TypedQuery <Car>  query = this.em.createNamedQuery("FindCars", Car.class);
+		TypedQuery <Car>  query = this.em.createNamedQuery("Car.FindCars", Car.class);
 		return query.getResultList();
 		
 	}
@@ -48,6 +48,13 @@ public class CarService {
 	
 	public void deleteCar(UUID id) throws CarNotFoundException{
 		Car car = this.getCar(id);
+<<<<<<<< HEAD:src/main/java/com/carmen/app/control/CarService.java
+========
+		if(car == null) {
+			throw new CarNotFoundException("Car with id " + id + " not found");
+
+		}
+>>>>>>>> master:src/main/java/com/carmen/app/services/CarService.java
 		
 		this.em.remove(car);
 	}
