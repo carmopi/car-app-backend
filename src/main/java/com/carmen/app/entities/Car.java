@@ -21,7 +21,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "cars")
-@NamedQuery(name = "FindCars", query ="SELECT a FROM Car a")
+@NamedQuery(name = "Car.FindCars", query ="SELECT a FROM Car a")
 public class Car implements Serializable {
 	
 	
@@ -48,7 +48,7 @@ public class Car implements Serializable {
 	
 	
 	//@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "last_update")
+	@Column(name = "lastUpdate")
 	@UpdateTimestamp
 	private LocalDateTime lastUpdate;
 	
