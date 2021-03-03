@@ -3,6 +3,7 @@ package com.carmen.app.boundary;
 import java.util.List;
 import java.util.UUID;
 
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,6 +17,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.carmen.app.control.CarService;
 import com.carmen.app.entities.Car;
 import com.carmen.app.exceptions.CarNotFoundException;
@@ -26,11 +30,13 @@ import com.carmen.app.exceptions.CarNotFoundException;
 @Produces(MediaType.APPLICATION_JSON)
 public class CarResource{
 	
+	private static final Logger log = LogManager.getLogger(CarResource.class);
 	
 	private CarService carService = new CarService();
 
 	@GET
 	public List<Car> getCars() {
+		log.info("Getting all the cars");
 		return this.carService.getCars();
 
 	}
@@ -38,6 +44,7 @@ public class CarResource{
 	@GET
 	@Path("/{id}")
 	public Response getCar(@PathParam("id") UUID id) {
+		log.info("Connecting with getCar");
 		try {
 			Car car = this.carService.getCar(id);
 			Response response = Response.status(Status.OK).entity(car).build();
@@ -45,6 +52,7 @@ public class CarResource{
 
 		} catch (CarNotFoundException ex) {
 			Response response = Response.status(Status.NOT_FOUND).build();
+			log.error("Error: Car Not Found");
 			return response;
 		}
 
@@ -53,6 +61,7 @@ public class CarResource{
 	@PUT
 	@Path("/{id}")
 	public Response updateCar(@PathParam("id") UUID id) {
+		log.info("Gonnecting with updatedCar");
 		try {
 			Car newCar = this.carService.getCar(id);
 			//newCar.setBrand(car.getBrand());
@@ -66,6 +75,8 @@ public class CarResource{
 
 		} catch (CarNotFoundException ex) {
 			Response response = Response.status(Status.NOT_FOUND).build();
+			
+			log.error("Error: Car Not Found");
 			return response;
 
 		}
@@ -75,6 +86,7 @@ public class CarResource{
 	@POST
 
 	public Response createdCar(Car car) {
+		log.info("Connecting with createdCar");
 		this.carService.createCar(car);
 		Response response = Response.status(Status.CREATED).build();
 
@@ -84,6 +96,7 @@ public class CarResource{
 	@DELETE
 	@Path("/{id}")
 	public Response deleteCar(@PathParam("id") UUID id) {
+		log.info("Connnecting with deleteCar");
 		try {
 			this.carService.deleteCar(id);
 			Response response = Response.status(Status.NO_CONTENT).build();
@@ -91,6 +104,7 @@ public class CarResource{
 		} catch (CarNotFoundException ex) {
 
 			Response response = Response.status(Status.NOT_FOUND).build();
+			log.error("Error: Car Not Found");
 			return response;
 		}
 
