@@ -104,29 +104,29 @@ public class Car implements Serializable {
 	}
 	
 	
-	public LocalDateTime getCreated_at() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 	
 	
-	public void setCreated_at(LocalDateTime createdAt) {
+	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
 	
 	
-	public LocalDateTime getLast_update() {
+	public LocalDateTime getLastUpdate() {
 		return lastUpdate;
 	}
 	
 	
-	public void setLast_update(LocalDateTime lastUpdate) {
+	public void setLastUpdate(LocalDateTime lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
 
 	@Override
 	public String toString() {
 		return "Car [id=" + id + ", brand=" + brand + ", registration=" + registration + ", country=" + country
-				+ ", created_at=" + createdAt + ", last_update=" + lastUpdate + "]";
+				+ ", createdAt=" + createdAt + ", lastUpdate=" + lastUpdate + "]";
 	}
 	
 	
