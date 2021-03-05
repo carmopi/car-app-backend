@@ -24,7 +24,6 @@ import com.carmen.app.control.CarService;
 import com.carmen.app.entities.Car;
 import com.carmen.app.exceptions.CarNotFoundException;
 
-
 @Path("/cars")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -36,13 +35,14 @@ public class CarResource{
 
 	@GET
 	public List<Car> getCars() {
-		log.info("Getting all the cars");
+		log.info("Connecting with getCars");
 		return this.carService.getCars();
 
 	}
 
 	@GET
 	@Path("/{id}")
+	
 	public Response getCar(@PathParam("id") UUID id) {
 		log.info("Connecting with getCar");
 		try {
@@ -60,8 +60,9 @@ public class CarResource{
 
 	@PUT
 	@Path("/{id}")
+	
 	public Response updateCar(@PathParam("id") UUID id) {
-		log.info("Gonnecting with updatedCar");
+		log.info("Connecting with updatedCar");
 		try {
 			Car newCar = this.carService.getCar(id);
 			//newCar.setBrand(car.getBrand());
@@ -84,7 +85,7 @@ public class CarResource{
 	}
 
 	@POST
-
+	
 	public Response createdCar(Car car) {
 		log.info("Connecting with createdCar");
 		this.carService.createCar(car);
@@ -95,6 +96,7 @@ public class CarResource{
 
 	@DELETE
 	@Path("/{id}")
+	
 	public Response deleteCar(@PathParam("id") UUID id) {
 		log.info("Connnecting with deleteCar");
 		try {
