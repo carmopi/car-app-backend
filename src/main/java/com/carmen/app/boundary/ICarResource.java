@@ -1,7 +1,7 @@
 package com.carmen.app.boundary;
 
 import java.util.List;
-import java.util.UUID;
+//import java.util.UUID;
 
 import javax.ws.rs.core.Response;
 
@@ -23,13 +23,13 @@ public interface ICarResource {
 	@Operation(summary = "Get car by id", responses = {
 			@ApiResponse(responseCode = "200", description = "Get car by id", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))),
 			@ApiResponse(responseCode = "404", description = "There is no car with this id") })
-	public Response getCar(@Parameter(description = "Car id", required = true) UUID id);
+	public Response getCar(@Parameter(description = "Car id", required = true) String id);
 
 	@Operation(summary = "Update a car", responses = {
 			@ApiResponse(responseCode = "201", description = "Car update", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))),
 			@ApiResponse(responseCode = "400", description = "Car not valid"),
 			@ApiResponse(responseCode = "404", description = "There is no car with this id") })
-	public Response updateCar(@Parameter(description = "Car that needs to be updated", required = true) UUID id);
+	public Response updateCar(@Parameter(description = "Car that needs to be updated", required = true) String id);
 
 	@Operation(summary = "Create a new Car", responses = {
 			@ApiResponse(responseCode = "201", description = "Car created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))),
@@ -43,6 +43,6 @@ public interface ICarResource {
 			@ApiResponse(responseCode = "204", description = "The car has been deleted", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))),
 			@ApiResponse(responseCode = "404", description = "There is no car with this id"),
 			@ApiResponse(responseCode = "400", description = "Car not valid") })
-	public Response deleteCar(@Parameter(description = "Car that need to be deleted", required = true) UUID id);
+	public Response deleteCar(@Parameter(description = "Car that need to be deleted", required = true) String id);
 
-}
+} 
