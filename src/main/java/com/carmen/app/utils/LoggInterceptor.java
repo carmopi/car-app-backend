@@ -1,5 +1,6 @@
 package com.carmen.app.utils;
 
+import javax.annotation.Priority;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
@@ -7,7 +8,9 @@ import javax.interceptor.InvocationContext;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+@Logged
 @Interceptor
+@Priority(Interceptor.Priority.APPLICATION)
 public class LoggInterceptor {
 
 	@AroundInvoke

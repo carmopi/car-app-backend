@@ -3,7 +3,8 @@ package com.carmen.app.boundary;
 import java.util.List;
 //import java.util.UUID;
 
-import javax.interceptor.Interceptors;
+import javax.ejb.EJB;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -23,16 +24,17 @@ import javax.ws.rs.core.Response.Status;
 import com.carmen.app.control.CarService;
 import com.carmen.app.entities.Car;
 import com.carmen.app.exceptions.CarNotFoundException;
-import com.carmen.app.utils.LoggInterceptor;
+
+import com.carmen.app.utils.Logged;
 
 @Path("/cars")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Interceptors(LoggInterceptor.class)
+@Logged
 public class CarResource implements ICarResource{
 
-	
-	private CarService carService = new CarService();
+	@EJB
+	private CarService carService;
 
 	@GET
 	public List<Car> getCars() {
