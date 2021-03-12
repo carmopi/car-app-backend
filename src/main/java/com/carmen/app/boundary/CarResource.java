@@ -4,7 +4,7 @@ import java.util.List;
 //import java.util.UUID;
 
 import javax.ejb.EJB;
-
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -64,17 +64,14 @@ public class CarResource implements ICarResource{
 	@PUT
 	@Path("/{id}")
 
-	public Response updateCar(@PathParam("id") String id) {
-		
+	public Response updateCar(@PathParam("id") String id, Car car) {
+	
 		try {
-			Car newCar = this.carService.getCar(id);
-			// newCar.setBrand(car.getBrand());
-			// newCar.setCountry(car.getCountry());
-			// newCar.setRegistration(car.getRegistration());
-
-			this.carService.updateCar(newCar);
-
-			Response response = Response.status(Status.OK).entity(newCar).build();
+			
+			car.setId(id);
+			
+	
+			Response response = Response.status(Status.OK).entity(this.carService.updateCar(car)).build();
 			return response;
 
 		} catch (CarNotFoundException ex) {
@@ -92,7 +89,7 @@ public class CarResource implements ICarResource{
 	public Response createdCar(Car car) {
 		
 		this.carService.createCar(car);
-		Response response = Response.status(Status.CREATED).build();
+		Response response = Response.status(Status.CREATED).entity(car).build();
 
 		return response;
 	}
