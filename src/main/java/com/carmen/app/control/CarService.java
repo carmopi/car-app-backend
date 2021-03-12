@@ -46,13 +46,12 @@ public class CarService {
 
 	}
 
-	public void updateCar(Car car) throws CarNotFoundException {
-		Car carUpdate = getCar(car.getId());
-		carUpdate.setBrand(car.getBrand());
-		carUpdate.setCountry(car.getCountry());
-		carUpdate.setRegistration(car.getRegistration());
-		this.em.merge(carUpdate);
-		em.flush();
+	public Car updateCar(Car car) throws CarNotFoundException {
+		 getCar(car.getId());
+		
+		 car = this.em.merge(car);
+		 this.em.flush();
+		return car;
 
 	}
 

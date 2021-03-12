@@ -1,0 +1,506 @@
+{
+	"info": {
+		"_postman_id": "d7fd6c3c-5e60-4fb7-b4c7-a3660dd05b5c",
+		"name": "carApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all cars",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/car-app/webapi/cars",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"car-app",
+						"webapi",
+						"cars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get cars by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/car-app/webapi/cars/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"car-app",
+						"webapi",
+						"cars",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "d7048c78-8250-11eb-8dcd-0242ac130003"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Car not_found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/car-app/webapi/cars/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"car-app",
+						"webapi",
+						"cars",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{$randomUUID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a car",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function(){\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201,202]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check brand\", function(){\r",
+							"    var response = pm.response.json();\r",
+							"    pm.expect(response.brand).to.eql(\"Opel\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check country\", function(){\r",
+							"    var response = pm.response.json();\r",
+							"    pm.expect(response.country).to.eql(\"Spain\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check registration\", function(){\r",
+							"    var response = pm.response.json();\r",
+							"    pm.expect(response.registration).to.eql(\"2021-03-11T12:53:30\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"brand\": \"Opel\",\r\n    \"country\": \"Spain\",\r\n    \"registration\": \"2021-03-11T12:53:30\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/car-app/webapi/cars",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"car-app",
+						"webapi",
+						"cars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a car wrong",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function (){\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"var schema = {\r",
+							"  \"error\": [\r",
+							"         \"Registration date is required\"\r",
+							"    ]\r",
+							"};\r",
+							"\r",
+							"\r",
+							"pm.test(\"Checking errors\", function () {\r",
+							"    var response = pm.response.json();\r",
+							"    pm.expect(response).to.eql(schema);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"brand\": \"BMW\",\r\n        \"country\": \"Germany\"\r\n        \r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/car-app/webapi/cars",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"car-app",
+						"webapi",
+						"cars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Car update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check brand\", function(){\r",
+							"    var response = pm.response.json();\r",
+							"    pm.expect(response.brand).to.eql(\"Seat\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check country\", function(){\r",
+							"    var response = pm.response.json();\r",
+							"    pm.expect(response.country).to.eql(\"Spain\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check registration\", function(){\r",
+							"    var response = pm.response.json();\r",
+							"    pm.expect(response.registration).to.eql(\"2021-03-12T08:20:00\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"brand\": \"Seat\",\r\n        \"country\": \"Spain\",\r\n        \"createdAt\": \"1950-05-09T00:00:00\",\r\n        \"registration\": \"2011-05-17T00:00:00\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/car-app/webapi/cars/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"car-app",
+						"webapi",
+						"cars",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "d7048c78-8250-11eb-8dcd-0242ac130003"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Car update wrong",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var schema = {\r",
+							"  \"error\": [\r",
+							"        \"Registration date is required\"\r",
+							"    ]\r",
+							"};\r",
+							"\r",
+							"\r",
+							"pm.test(\"Checking errors\", function () {\r",
+							"    var response = pm.response.json();\r",
+							"    pm.expect(response).to.eql(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"brand\": \"Seat\",\r\n\t\"country\":\"Spain\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/car-app/webapi/cars/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"car-app",
+						"webapi",
+						"cars",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "d7048c78-8250-11eb-8dcd-0242ac130003"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Car update not_found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"brand\": \"BMW\",\r\n\t\"country\":\"Germany\",\r\n\t\"registration\": \"2021-03-11T09:13:26\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/car-app/webapi/cars/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"car-app",
+						"webapi",
+						"cars",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{$randomUUID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete car",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/car-app/webapi/cars/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"car-app",
+						"webapi",
+						"cars",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "d7048fb6-8250-11eb-8dcd-0242ac130003"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete car not_found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function (){\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/car-app/webapi/cars/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"car-app",
+						"webapi",
+						"cars",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{$randomUUID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080"
+		}
+	]
+}

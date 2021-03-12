@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
+//import javax.persistence.GeneratedValue;
 //import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
@@ -14,7 +14,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 //import javax.persistence.Temporal;
 //import javax.persistence.TemporalType;
-
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 //import org.hibernate.annotations.GenericGenerator;
@@ -33,13 +33,16 @@ public class Car implements Serializable {
 	private String id;
 
 	@Column(name = "brand_car")
+	@NotNull(message = "Brand is required")
 	private String brand;
 
 	// @Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "registration_date")
+	@NotNull(message = "Registration date is required")
 	private LocalDateTime registration;
 
 	@Column(name = "country")
+	@NotNull(message = "Country is required")
 	private String country;
 
 	// @Temporal(TemporalType.TIMESTAMP)
