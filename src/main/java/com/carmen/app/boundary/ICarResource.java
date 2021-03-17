@@ -18,7 +18,7 @@ public interface ICarResource {
 
 	@Operation(summary = "Get all cars", responses = {
 			@ApiResponse(responseCode = "200", description = "Get all cars", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))) })
-	public List<Car> getCars();
+	public Response getCars();
 
 	@Operation(summary = "Get car by id", responses = {
 			@ApiResponse(responseCode = "200", description = "Get car by id", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))),
