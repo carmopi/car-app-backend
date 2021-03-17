@@ -1,10 +1,10 @@
 package com.carmen.app.boundary;
 
+import java.util.ArrayList;
 import java.util.List;
 //import java.util.UUID;
 
 import javax.ejb.EJB;
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -37,9 +37,10 @@ public class CarResource implements ICarResource{
 	private CarService carService;
 
 	@GET
-	public List<Car> getCars() {
-		
-		return this.carService.getCars();
+	public Response getCars() {
+		List<Car> cars = this.carService.getCars();
+		Response response = Response.status(Status.OK).entity(cars).build();
+		return response;
 
 	}
 

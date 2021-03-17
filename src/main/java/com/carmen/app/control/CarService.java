@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 //import org.apache.log4j.LogManager;
@@ -21,8 +22,8 @@ import com.carmen.app.utils.Logged;
 @Logged
 public class CarService {
 
-	EntityManagerFactory emf = Persistence.createEntityManagerFactory("carP");
-	private EntityManager em = emf.createEntityManager();
+	@PersistenceContext(unitName = "carP")
+	private EntityManager em;
 
 	public List<Car> getCars() {
 		TypedQuery<Car> query = this.em.createNamedQuery("Car.FindCars", Car.class);
@@ -41,8 +42,9 @@ public class CarService {
 
 	}
 
-	public void createCar(Car car) {
+	public Car createCar(Car car) {
 		this.em.persist(car);
+		return car;
 
 	}
 
