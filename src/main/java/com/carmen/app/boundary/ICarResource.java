@@ -78,7 +78,7 @@ public interface ICarResource {
 	 * @param id of the car to delete
 	 * @return response that contains status code 204 if there is a car that matches
 	 *         with the given id, if the id does not match with any car in the data
-	 *         base, response contains status code 404
+	 *         base, response contains status code 404.
 	 */
 	@Operation(summary = "Delete a Car", responses = {
 			@ApiResponse(responseCode = "204", description = "The car has been deleted", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))),
