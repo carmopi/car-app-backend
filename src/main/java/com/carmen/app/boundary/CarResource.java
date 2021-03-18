@@ -27,6 +27,14 @@ import com.carmen.app.exceptions.CarNotFoundException;
 
 import com.carmen.app.utils.Logged;
 
+
+/**
+ * 
+ * Resource that maps {@link Car} API to a method
+ * 
+ * @author Carmen Piñera Moreno
+ *
+ */
 @Path("/cars")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
