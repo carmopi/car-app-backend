@@ -3,14 +3,13 @@ package com.carmen.app.control;
 import java.util.List;
 //import java.util.UUID;
 
+import javax.ejb.EJB;
 //import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import javax.persistence.EntityManager;
+
 //import javax.persistence.EntityManagerFactory;
 //import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 //import org.apache.log4j.LogManager;
 //import org.apache.log4j.Logger;
@@ -21,7 +20,7 @@ import com.carmen.app.utils.Logged;
 
 /**
  * 
- * Service that generate a CRUD to be used by {@link CarResource}
+ * Service that generate a CRUD to be used by the CarResource
  * 
  * @author Carmen Piñera Moreno
  *
@@ -30,8 +29,8 @@ import com.carmen.app.utils.Logged;
 @Logged
 public class CarService {
 
-	@PersistenceContext(unitName = "carP")
-	private EntityManager em;
+	@EJB
+	private PersistenceService<Car, String> persistenceService;
 
 	/**
 	 * Obtain every car that exist in the system
@@ -40,8 +39,8 @@ public class CarService {
 	 */
 
 	public List<Car> getCars() {
-		TypedQuery<Car> query = this.em.createNamedQuery("Car.FindCars", Car.class);
-		return query.getResultList();
+		
+		return this.persistenceService.getAll("Car.findAll", Car.class);
 
 	}
 
@@ -57,7 +56,7 @@ public class CarService {
 
 	public Car getCar(String id) throws CarNotFoundException {
 
-		Car car = this.em.find(Car.class, id);
+		Car car = this.persistenceService.getById(Car.class, id);
 		if (car == null) {
 			throw new CarNotFoundException("Car with id " + id + " not found");
 
@@ -75,7 +74,7 @@ public class CarService {
 	 */
 
 	public Car createCar(Car car) {
-		this.em.persist(car);
+		this.persistenceService.createNew(car);
 		return car;
 
 	}
@@ -92,8 +91,8 @@ public class CarService {
 	public Car updateCar(Car car) throws CarNotFoundException {
 		getCar(car.getId());
 
-		car = this.em.merge(car);
-		this.em.flush();
+		car = this.persistenceService.updateOne(car);
+		
 		return car;
 
 	}
@@ -109,7 +108,7 @@ public class CarService {
 
 	public void deleteCar(String id) throws CarNotFoundException {
 		Car car = this.getCar(id);
-		this.em.remove(car);
+		this.persistenceService.deleteOne(car);
 	}
 
 }
