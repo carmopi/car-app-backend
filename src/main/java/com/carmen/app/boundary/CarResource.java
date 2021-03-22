@@ -27,11 +27,18 @@ import com.carmen.app.exceptions.CarNotFoundException;
 
 import com.carmen.app.utils.Logged;
 
+/**
+ * 
+ * Resource that maps {@link Car} API to a method
+ * 
+ * @author Carmen Piñera Moreno
+ *
+ */
 @Path("/cars")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Logged
-public class CarResource implements ICarResource{
+public class CarResource implements ICarResource {
 
 	@EJB
 	private CarService carService;
@@ -48,7 +55,7 @@ public class CarResource implements ICarResource{
 	@Path("/{id}")
 
 	public Response getCar(@PathParam("id") String id) {
-		
+
 		try {
 			Car car = this.carService.getCar(id);
 			Response response = Response.status(Status.OK).entity(car).build();
@@ -56,7 +63,7 @@ public class CarResource implements ICarResource{
 
 		} catch (CarNotFoundException ex) {
 			Response response = Response.status(Status.NOT_FOUND).build();
-			
+
 			return response;
 		}
 
@@ -66,19 +73,17 @@ public class CarResource implements ICarResource{
 	@Path("/{id}")
 
 	public Response updateCar(@PathParam("id") String id, Car car) {
-	
+
 		try {
-			
+
 			car.setId(id);
-			
-	
+
 			Response response = Response.status(Status.OK).entity(this.carService.updateCar(car)).build();
 			return response;
 
 		} catch (CarNotFoundException ex) {
 			Response response = Response.status(Status.NOT_FOUND).build();
 
-			
 			return response;
 
 		}
@@ -88,7 +93,7 @@ public class CarResource implements ICarResource{
 	@POST
 
 	public Response createdCar(Car car) {
-		
+
 		this.carService.createCar(car);
 		Response response = Response.status(Status.CREATED).entity(car).build();
 
@@ -99,7 +104,7 @@ public class CarResource implements ICarResource{
 	@Path("/{id}")
 
 	public Response deleteCar(@PathParam("id") String id) {
-		
+
 		try {
 			this.carService.deleteCar(id);
 			Response response = Response.status(Status.NO_CONTENT).build();
@@ -107,7 +112,7 @@ public class CarResource implements ICarResource{
 		} catch (CarNotFoundException ex) {
 
 			Response response = Response.status(Status.NOT_FOUND).build();
-			
+
 			return response;
 		}
 
