@@ -35,9 +35,9 @@ public class PersistenceService<T,K>{
 		
 	}
 	
-	public T createNew(T entity) {
+	public void createNew(T entity) {
 		 this.em.persist(entity);
-		 return entity;
+		 
 	}
 	
 	public T updateOne(T entity) {
