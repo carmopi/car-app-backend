@@ -35,10 +35,7 @@ public class CarServiceTest {
 	private CarService carService;
 
 	@Mock
-	private EntityManager em;
-
-	@Mock
-	TypedQuery<Car> query;
+	private PersistenceService<Car, String> persistenceService;
 
 	private Car car;
 
@@ -55,70 +52,67 @@ public class CarServiceTest {
 
 	@Test
 	public void testCarCreated() {
-		doNothing().when(this.em).persist(Mockito.any());
+		doNothing().when(this.persistenceService).createNew(car);
 		assertEquals(car, carService.createCar(car));
-		verify(em).persist(Mockito.any());
+		verify(this.persistenceService).createNew(car);
 	}
 
 	@Test
 	public void testGetCars() {
-		List<Car> cars = new ArrayList<>();
-
-		when(em.createNamedQuery("Car.FindCars", Car.class)).thenReturn(query);
-		when(query.getResultList()).thenReturn(cars);
-		assertEquals(cars, carService.getCars());
-		verify(em).createNamedQuery("Car.FindCars", Car.class);
-		verify(query).getResultList();
+		when(this.persistenceService.getAll("Car.findAll", Car.class)).thenReturn(new ArrayList<Car>());
+		List<Car> expectedCars = new ArrayList<Car>();
+		List<Car> cars = this.carService.getCars();
+		assertEquals(expectedCars, cars);
 
 	}
 
 	@Test
 	public void testGetACar() throws CarNotFoundException {
-		when(em.find(Car.class, id)).thenReturn(car);
+		when(this.persistenceService.getById(Car.class, id)).thenReturn(car);
 		assertEquals(car, carService.getCar(id));
-		verify(em).find(Car.class, id);
+		verify(this.persistenceService).getById(Car.class, id);
 	}
 
 	@Test
 	public void testUpdateCar() throws CarNotFoundException {
-		when(em.find(Car.class, id)).thenReturn(car);
-		when(em.merge(car)).thenReturn(car);
+		when(this.persistenceService.getById(Car.class, id)).thenReturn(car);
+		when(this.persistenceService.updateOne(car)).thenReturn(car);
 		assertEquals(car, carService.updateCar(car));
-		verify(em).merge(car);
+		verify(this.persistenceService).updateOne(car);
 	}
 
 	@Test
 	public void testDeleteCar() throws CarNotFoundException {
-		when(em.find(Car.class, id)).thenReturn(car);
-		doNothing().when(em).remove(car);
+		when(this.persistenceService.getById(Car.class, id)).thenReturn(car);
+		doNothing().when(this.persistenceService).deleteOne(car);
 		carService.deleteCar(id);
-		verify(em).remove(car);
+		verify(this.persistenceService).deleteOne(car);
 
 	}
 
 	@Test(expected = CarNotFoundException.class)
 	public void testGetWrongCar() throws CarNotFoundException {
 		// String carId = "f5b4afda-870b-11eb-8dcd-0242ac130003";
-		when(em.find(Car.class, id)).thenReturn(null);
+		when(this.persistenceService.getById(Car.class, id)).thenReturn(null);
 		carService.getCar(id);
-		verify(em).persist(car);
+		verify(this.persistenceService).getById(Car.class, id);
 
 	}
 
 	@Test(expected = CarNotFoundException.class)
 	public void testUpdateWrongCar() throws CarNotFoundException {
-		when(em.find(Car.class, id)).thenReturn(null);
+		when(this.persistenceService.getById(Car.class, id)).thenReturn(null);
 		carService.updateCar(car);
-		verify(em.find(Car.class, id));
+		verify(this.persistenceService.getById(Car.class, id));
 
 	}
 
 	@Test(expected = CarNotFoundException.class)
 	public void testDeleteWrongCar() throws CarNotFoundException {
-		when(em.find(Car.class, id)).thenReturn(null);
+		when(this.persistenceService.getById(Car.class, id)).thenReturn(null);
 		carService.deleteCar(id);
-		verify(em.find(Car.class, id));
-		verify(em).remove(car);
+		verify(this.persistenceService.getById(Car.class, id));
+		verify(this.persistenceService).deleteOne(car);
 	}
 
 }
