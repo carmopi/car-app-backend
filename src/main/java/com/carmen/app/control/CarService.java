@@ -40,7 +40,7 @@ public class CarService {
 
 	public List<Car> getCars() {
 		
-		return this.persistenceService.getAll("Car.findAll", Car.class);
+		return this.persistenceService.getAll("Car.FindCars", Car.class);
 
 	}
 
