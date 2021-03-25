@@ -59,7 +59,7 @@ public class CarServiceTest {
 
 	@Test
 	public void testGetCars() {
-		when(this.persistenceService.getAll("Car.findAll", Car.class)).thenReturn(new ArrayList<Car>());
+		when(this.persistenceService.getAll("Car.FindCars", Car.class)).thenReturn(new ArrayList<Car>());
 		List<Car> expectedCars = new ArrayList<Car>();
 		List<Car> cars = this.carService.getCars();
 		assertEquals(expectedCars, cars);

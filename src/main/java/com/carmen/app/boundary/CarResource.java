@@ -3,6 +3,7 @@ package com.carmen.app.boundary;
 import java.util.ArrayList;
 import java.util.List;
 //import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -22,6 +23,7 @@ import javax.ws.rs.core.Response.Status;
 //import org.apache.log4j.Logger;
 
 import com.carmen.app.control.CarService;
+import com.carmen.app.dto.CarDto;
 import com.carmen.app.entities.Car;
 import com.carmen.app.exceptions.CarNotFoundException;
 
@@ -45,7 +47,7 @@ public class CarResource implements ICarResource {
 
 	@GET
 	public Response getCars() {
-		List<Car> cars = this.carService.getCars();
+		List<CarDto> cars = this.carService.getCars().stream().map(car -> car.convertToDto()).collect(Collectors.toList());
 		Response response = Response.status(Status.OK).entity(cars).build();
 		return response;
 
@@ -57,8 +59,8 @@ public class CarResource implements ICarResource {
 	public Response getCar(@PathParam("id") String id) {
 
 		try {
-			Car car = this.carService.getCar(id);
-			Response response = Response.status(Status.OK).entity(car).build();
+			CarDto carDto = this.carService.getCar(id).convertToDto();
+			Response response = Response.status(Status.OK).entity(carDto).build();
 			return response;
 
 		} catch (CarNotFoundException ex) {
@@ -72,13 +74,13 @@ public class CarResource implements ICarResource {
 	@PUT
 	@Path("/{id}")
 
-	public Response updateCar(@PathParam("id") String id, Car car) {
+	public Response updateCar(@PathParam("id") String id, CarDto carDto) {
 
 		try {
 
-			car.setId(id);
-
-			Response response = Response.status(Status.OK).entity(this.carService.updateCar(car)).build();
+			carDto.setId(id);
+			Car updateCarDto = carDto.convertToEntity();
+			Response response = Response.status(Status.OK).entity(this.carService.updateCar(updateCarDto)).build();
 			return response;
 
 		} catch (CarNotFoundException ex) {
@@ -92,10 +94,10 @@ public class CarResource implements ICarResource {
 
 	@POST
 
-	public Response createdCar(Car car) {
+	public Response createdCar(CarDto carDto) {
 
-		this.carService.createCar(car);
-		Response response = Response.status(Status.CREATED).entity(car).build();
+		this.carService.createCar(carDto.convertToEntity()).convertToDto();
+		Response response = Response.status(Status.CREATED).entity(carDto).build();
 
 		return response;
 	}
@@ -117,5 +119,6 @@ public class CarResource implements ICarResource {
 		}
 
 	}
+
 
 }

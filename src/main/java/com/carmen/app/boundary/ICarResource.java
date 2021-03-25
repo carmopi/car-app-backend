@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ws.rs.core.Response;
 
+import com.carmen.app.dto.CarDto;
 import com.carmen.app.entities.Car;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,7 +30,7 @@ public interface ICarResource {
 	/**
 	 * Get a car with a given id
 	 * 
-	 * @param id that belongs to a {@link Car} entity
+	 * @param id that belongs to a {@link CarDto} 
 	 * @return response that contains either the car or code 404 if the id does not
 	 *         match with any car in the database
 	 */
@@ -40,11 +41,11 @@ public interface ICarResource {
 	public Response getCar(@Parameter(description = "Car id", required = true) String id);
 
 	/**
-	 * Updated a {link Car} entity by its given id and the request body
+	 * Updated a {@link CarDto} entity by its given id and the request body
 	 * 
 	 * @param id  of the car
-	 * @param car {@link Car} to be updated
-	 * @return response that contains the update of {@link Car} and the code 200, if
+	 * @param car {@link CarDto} to be updated
+	 * @return response that contains the update of {@link CarDto} and the code 200, if
 	 *         there is no car with the given id the response contains the code 404
 	 *         and if the request body contains errors, the response contains the
 	 *         status code 400
@@ -54,26 +55,26 @@ public interface ICarResource {
 			@ApiResponse(responseCode = "400", description = "Car not valid"),
 			@ApiResponse(responseCode = "404", description = "There is no car with this id") })
 	public Response updateCar(@Parameter(description = "Car that needs to be updated", required = true) String id,
-			@RequestBody(description = "Updated a Car", required = true, content = @Content(schema = @Schema(implementation = Car.class))) Car car);
+			@RequestBody(description = "Updated a Car", required = true, content = @Content(schema = @Schema(implementation = CarDto.class))) CarDto carDto);
 
 	/**
-	 * Create a {@link Car} form the request body
+	 * Create a {@link CarDto} form the request body
 	 * 
-	 * @param car {@link Car} entity to create
+	 * @param car {@link CarDto}  to create
 	 * @return response that contains either the created car and status code 200 of
 	 *         there are errors in the request body the response contains status
 	 *         code 400
 	 */
 	@Operation(summary = "Create a new Car", responses = {
-			@ApiResponse(responseCode = "201", description = "Car created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))),
+			@ApiResponse(responseCode = "201", description = "Car created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CarDto.class))),
 			@ApiResponse(responseCode = "400", description = "Car not valid")
 
 	})
 	public Response createdCar(
-			@RequestBody(description = "Created a new Car", required = true, content = @Content(schema = @Schema(implementation = Car.class))) Car car);
+			@RequestBody(description = "Created a new Car", required = true, content = @Content(schema = @Schema(implementation = CarDto.class))) CarDto carDto);
 
 	/**
-	 * Delete a {@link Car} entity from the database
+	 * Delete a {@link CarDto} from the database
 	 * 
 	 * @param id of the car to delete
 	 * @return response that contains status code 204 if there is a car that matches
@@ -81,7 +82,7 @@ public interface ICarResource {
 	 *         base, response contains status code 404.
 	 */
 	@Operation(summary = "Delete a Car", responses = {
-			@ApiResponse(responseCode = "204", description = "The car has been deleted", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))),
+			@ApiResponse(responseCode = "204", description = "The car has been deleted", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CarDto.class))),
 			@ApiResponse(responseCode = "404", description = "There is no car with this id"),
 			@ApiResponse(responseCode = "400", description = "Car not valid") })
 	public Response deleteCar(@Parameter(description = "Car that need to be deleted", required = true) String id);
