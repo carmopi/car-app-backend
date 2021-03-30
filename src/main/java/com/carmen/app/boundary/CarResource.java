@@ -1,6 +1,6 @@
 package com.carmen.app.boundary;
 
-import java.util.ArrayList;
+
 import java.util.List;
 //import java.util.UUID;
 import java.util.stream.Collectors;
@@ -8,13 +8,14 @@ import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -28,6 +29,7 @@ import com.carmen.app.entities.Car;
 import com.carmen.app.exceptions.CarNotFoundException;
 
 import com.carmen.app.utils.Logged;
+
 
 /**
  * 
@@ -46,11 +48,20 @@ public class CarResource implements ICarResource {
 	private CarService carService;
 
 	@GET
-	public Response getCars() {
-		List<CarDto> cars = this.carService.getCars().stream().map(car -> car.convertToDto()).collect(Collectors.toList());
+	public Response getCars(@DefaultValue("1") @QueryParam("page") int page,
+			@DefaultValue("3") @QueryParam("size") int size, @QueryParam("filter") String filter,
+			@DefaultValue("asc") @QueryParam("sort") String sort) {
+		
+		if (page < 1 || size < 0) {
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+
+		List<CarDto> cars = this.carService.getCars(page, size, filter, sort).stream().map(car -> car.convertToDto())
+				.collect(Collectors.toList());
+		
+		
 		Response response = Response.status(Status.OK).entity(cars).build();
 		return response;
-
 	}
 
 	@GET
@@ -119,6 +130,5 @@ public class CarResource implements ICarResource {
 		}
 
 	}
-
 
 }

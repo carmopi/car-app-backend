@@ -1,12 +1,14 @@
 package com.carmen.app.control;
 
+import java.util.HashMap;
 import java.util.List;
 //import java.util.UUID;
+import java.util.Map;
 
 import javax.ejb.EJB;
 //import javax.ejb.EJB;
 import javax.ejb.Stateless;
-
+import javax.persistence.TypedQuery;
 
 //import javax.persistence.EntityManagerFactory;
 //import javax.persistence.Persistence;
@@ -32,17 +34,24 @@ public class CarService {
 	@EJB
 	private PersistenceService<Car, String> persistenceService;
 
+		
 	/**
 	 * Obtain every car that exist in the system
+	 * @param sort 
+	 * @param filter 
+	 * @param size 
+	 * @param page 
 	 * 
 	 * @return a List of cars {@link Car} using a namendQuery
 	 */
 
-	public List<Car> getCars() {
-		
-		return this.persistenceService.getAll("Car.FindCars", Car.class);
+	public List<Car> getCars(int page, int size, String filter, String sort) {
+		return this.persistenceService.getAll(Car.class, page, size, filter, sort);
+
 
 	}
+	
+	
 
 	/**
 	 * Obtain a car by its id
