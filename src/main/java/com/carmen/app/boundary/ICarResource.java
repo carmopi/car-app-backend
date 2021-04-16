@@ -29,7 +29,7 @@ public interface ICarResource {
 	 */
 	@Operation(summary = "Get all cars", responses = {
 			@ApiResponse(responseCode = "200", description = "Get all cars", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))) })
-	public Response getCars(int page, int size, String filter, String sort);
+	public Response getCars(int page, int size, String filter, String orderBy);
 
 	/**
 	 * Get a car with a given id

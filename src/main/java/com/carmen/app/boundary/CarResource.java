@@ -1,6 +1,7 @@
 package com.carmen.app.boundary;
 
 
+import java.util.LinkedHashMap;
 import java.util.List;
 //import java.util.UUID;
 import java.util.stream.Collectors;
@@ -48,19 +49,33 @@ public class CarResource implements ICarResource {
 	private CarService carService;
 
 	@GET
-	public Response getCars(@DefaultValue("1") @QueryParam("page") int page,
-			@DefaultValue("3") @QueryParam("size") int size, @QueryParam("filter") String filter,
-			@DefaultValue("asc") @QueryParam("sort") String sort) {
-		
+	public Response getCars(@DefaultValue("1") @QueryParam(value = "page") int page,
+			@DefaultValue("5") @QueryParam(value = "size") int size,
+			@DefaultValue("") @QueryParam(value = "filterBy") String filterBy,
+			@QueryParam(value = "orderBy") String orderBy) {
+		Response response = null;
 		if (page < 1 || size < 0) {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
-
-		List<CarDto> cars = this.carService.getCars(page, size, filter, sort).stream().map(car -> car.convertToDto())
+		List<CarDto> list = this.carService.getCars(page, size, filterBy, orderBy).stream().map(car -> car.convertToDto())
 				.collect(Collectors.toList());
-		
-		
-		Response response = Response.status(Status.OK).entity(cars).build();
+
+		int perPage = list.size();
+		int total = this.carService.getCount(filterBy);
+		int pageCount = 1;
+		if (perPage < total && perPage > 0) {
+			pageCount = (total / perPage) + 1;
+		}
+		if (page > pageCount) {
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+		LinkedHashMap<String, Object> carsMap = new LinkedHashMap<String, Object>();
+		carsMap.put("page", page);
+		carsMap.put("per_page", perPage);
+		carsMap.put("page_count", pageCount);
+		carsMap.put("total_count", total);
+		carsMap.put("cars", list);
+		response = Response.ok(carsMap).build();
 		return response;
 	}
 

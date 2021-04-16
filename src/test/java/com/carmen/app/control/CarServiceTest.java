@@ -62,7 +62,7 @@ public class CarServiceTest {
 
 	@Test
 	public void testGetCars() {
-		when(this.persistenceService.getAll(Mockito.eq(Car.class),Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(), Mockito.anyString())).thenReturn(new ArrayList<Car>());
+		when(this.persistenceService.getAll(Mockito.eq(Car.class),Mockito.anyMap(),Mockito.anyString())).thenReturn(query);
 		List<Car> expectedCars = new ArrayList<Car>();
 		List<Car> cars = this.carService.getCars(1 , 2, "Seat", "brand");
 		assertEquals(expectedCars, cars);
