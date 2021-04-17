@@ -1,12 +1,14 @@
 package com.carmen.app.control;
 
+import java.util.HashMap;
 import java.util.List;
 //import java.util.UUID;
+import java.util.Map;
 
 import javax.ejb.EJB;
 //import javax.ejb.EJB;
 import javax.ejb.Stateless;
-
+import javax.persistence.TypedQuery;
 
 //import javax.persistence.EntityManagerFactory;
 //import javax.persistence.Persistence;
@@ -32,17 +34,39 @@ public class CarService {
 	@EJB
 	private PersistenceService<Car, String> persistenceService;
 
+	
+	private Map<String,String> filter = new HashMap<String, String>();
+		
 	/**
 	 * Obtain every car that exist in the system
-	 * 
-	 * @return a List of cars {@link Car} using a namendQuery
+	* @param page     page number of the pagination
+	 * @param size     number of cars.
+	 * @param filterBy {@link Car} Field to be filtered by.
+	 * @param orderBy  {@link Car} Field to be ordered by.
+	 * @return cars List that contains all of the {@link Car} entities.
 	 */
-
-	public List<Car> getCars() {
-		
-		return this.persistenceService.getAll("Car.FindCars", Car.class);
-
+	public List<Car> getCars(int page, int size, String filterBy, String orderBy) {
+		filter.put("brand", filterBy);
+		filter.put("registration", filterBy);
+		TypedQuery<Car> query = this.persistenceService.getAll(Car.class, filter, orderBy);
+		query.setFirstResult((size * page) - size);
+		query.setMaxResults(size);
+		return query.getResultList();
 	}
+
+	/**
+	 * 
+	 * Obtain number of cars filtered by name and registration.
+	 * 
+	 * @param filterBy {@link Car} Field to be filtered by
+	 * @return List that contains all of the {@link Car} entities filtered by name
+	 *         and registration.
+	 */
+	public int getCount(String filterBy) {
+		return this.persistenceService.getAll(Car.class, filter, "").getResultList().size();
+	}
+
+	
 
 	/**
 	 * Obtain a car by its id

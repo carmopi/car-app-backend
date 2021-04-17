@@ -27,10 +27,32 @@ public class CarDto implements Serializable {
 	private String brand;
 	private LocalDateTime registration;
 	private String country;
+	private LocalDateTime createAt;
+	private LocalDateTime lastUpdate;
+	
+	public CarDto() {
+		
+	}
+	
+	public CarDto(String brand, LocalDateTime registration, String country) {
+		this.brand = brand;
+		this.registration = registration;
+		this.country = country;
+	}
 	
 	
-	
-	
+	public LocalDateTime getCreateAt() {
+		return createAt;
+	}
+	public void setCreateAt(LocalDateTime createAt) {
+		this.createAt = createAt;
+	}
+	public LocalDateTime getLastUpdate() {
+		return lastUpdate;
+	}
+	public void setLastUpdate(LocalDateTime lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 	public String getId() {
 		return id;
 	}

@@ -20,12 +20,16 @@ public interface ICarResource {
 	/**
 	 * 
 	 * Get a list of cars existing in the database
+	 * @param page number of the pagination
+	 * @param size number of cars
+	 * @param filter field to filter
+	 * @param sort  field to order
 	 * 
 	 * @return response that contains a list with all cars values
 	 */
 	@Operation(summary = "Get all cars", responses = {
 			@ApiResponse(responseCode = "200", description = "Get all cars", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))) })
-	public Response getCars();
+	public Response getCars(int page, int size, String filter, String orderBy);
 
 	/**
 	 * Get a car with a given id

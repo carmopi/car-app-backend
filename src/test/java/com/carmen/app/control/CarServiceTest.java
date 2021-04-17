@@ -37,6 +37,9 @@ public class CarServiceTest {
 	@Mock
 	private PersistenceService<Car, String> persistenceService;
 
+	@Mock
+	private TypedQuery<Car> query;
+	
 	private Car car;
 
 	private String id = "dff6b9ba-8579-11eb-8dcd-0242ac130003";
@@ -52,16 +55,16 @@ public class CarServiceTest {
 
 	@Test
 	public void testCarCreated() {
-		doNothing().when(this.persistenceService).createNew(car);
+		when(this.persistenceService.createNew(car)).thenReturn(car);
 		assertEquals(car, carService.createCar(car));
 		verify(this.persistenceService).createNew(car);
 	}
 
 	@Test
 	public void testGetCars() {
-		when(this.persistenceService.getAll("Car.FindCars", Car.class)).thenReturn(new ArrayList<Car>());
+		when(this.persistenceService.getAll(Mockito.eq(Car.class),Mockito.anyMap(),Mockito.anyString())).thenReturn(query);
 		List<Car> expectedCars = new ArrayList<Car>();
-		List<Car> cars = this.carService.getCars();
+		List<Car> cars = this.carService.getCars(1 , 2, "Seat", "brand");
 		assertEquals(expectedCars, cars);
 
 	}
