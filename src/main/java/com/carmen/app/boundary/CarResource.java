@@ -50,7 +50,7 @@ public class CarResource implements ICarResource {
 
 	@GET
 	public Response getCars(@DefaultValue("1") @QueryParam(value = "page") int page,
-			@DefaultValue("5") @QueryParam(value = "size") int size,
+			@DefaultValue("200") @QueryParam(value = "size") int size,
 			@DefaultValue("") @QueryParam(value = "filterBy") String filterBy,
 			@QueryParam(value = "orderBy") String orderBy) {
 		Response response = null;

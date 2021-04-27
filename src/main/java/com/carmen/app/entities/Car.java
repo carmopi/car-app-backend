@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 //import javax.persistence.GeneratedValue;
 //import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -20,6 +21,7 @@ import org.hibernate.annotations.CreationTimestamp;
 //import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
+
 import com.carmen.app.dto.CarDto;
 import org.modelmapper.ModelMapper;
 
@@ -30,7 +32,7 @@ import org.modelmapper.ModelMapper;
  *
  */
 @Entity
-@Table(name = "cars")
+
 @NamedQuery(name = "Car.FindCars", query = "SELECT a FROM Car a")
 public class Car implements Serializable {
 
@@ -41,18 +43,20 @@ public class Car implements Serializable {
 	//@GeneratedValue(generator = "UUID")
 	private String id;
 
-	@Column(name = "brand_car")
+	//@Column(name = "brand_car")
 	@NotNull(message = "Brand is required")
-	private String brand;
+	@ManyToOne
+	private Brand brand;
 
 	// @Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "registration_date")
+	@Column(name = "registration")
 	@NotNull(message = "Registration date is required")
 	private LocalDateTime registration;
 
-	@Column(name = "country")
+	//@Column(name = "country")
 	@NotNull(message = "Country is required")
-	private String country;
+	@ManyToOne
+	private Country country;
 
 	// @Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created")
@@ -68,7 +72,7 @@ public class Car implements Serializable {
 
 	}
 
-	public Car(String brand, LocalDateTime registration, String country) {
+	public Car( Brand brand, LocalDateTime registration, Country country) {
 	
 		this.brand = brand;
 		this.registration = registration;
@@ -84,11 +88,11 @@ public class Car implements Serializable {
 		this.id = id;
 	}
 
-	public String getBrand() {
+	public Brand getBrand() {
 		return brand;
 	}
 
-	public void setBrand(String brand) {
+	public void setBrand(Brand brand) {
 		this.brand = brand;
 	}
 
@@ -100,11 +104,11 @@ public class Car implements Serializable {
 		this.registration = registration;
 	}
 
-	public String getCountry() {
+	public Country getCountry() {
 		return country;
 	}
 
-	public void setCountry(String country) {
+	public void setCountry(Country country) {
 		this.country = country;
 	}
 
