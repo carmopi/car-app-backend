@@ -16,6 +16,14 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.modelmapper.ModelMapper;
+
+import com.carmen.app.dto.BrandDto;
+
+
+
+
+
 @Entity
 @Table(name = "brand")
 public class Brand implements Serializable {
@@ -41,8 +49,8 @@ public class Brand implements Serializable {
 		
 	}
 	
-	public Brand(String id, String name) {
-	this.id = id;
+	public Brand( String name) {
+	
 	this.name = name;
 	}
 	
@@ -76,7 +84,13 @@ public class Brand implements Serializable {
 		this.id = UUID.randomUUID().toString();
 	}
 	
-	
+	public BrandDto convertToDto() {
+		ModelMapper modelMapper = new ModelMapper();
+		BrandDto carDto = modelMapper.map(this, BrandDto.class);
+		return carDto;
+		
+	}
+
 
 	
 }

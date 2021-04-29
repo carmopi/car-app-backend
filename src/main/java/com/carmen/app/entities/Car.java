@@ -58,7 +58,7 @@ public class Car implements Serializable {
 	private LocalDateTime createdAt;
 
 	//@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "lastUpdate")
+	@Column(name = "lastupdate")
 	@UpdateTimestamp
 	private LocalDateTime lastUpdate;
 

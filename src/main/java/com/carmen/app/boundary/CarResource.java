@@ -1,7 +1,7 @@
 package com.carmen.app.boundary;
 
 
-import java.util.LinkedHashMap;
+
 import java.util.List;
 //import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,7 +27,7 @@ import javax.ws.rs.core.Response.Status;
 import com.carmen.app.control.CarService;
 import com.carmen.app.dto.CarDto;
 import com.carmen.app.entities.Car;
-import com.carmen.app.exceptions.CarNotFoundException;
+import com.carmen.app.exceptions.EntityNotFoundException;
 
 import com.carmen.app.utils.Logged;
 
@@ -49,34 +49,15 @@ public class CarResource implements ICarResource {
 	private CarService carService;
 
 	@GET
-	public Response getCars(@DefaultValue("1") @QueryParam(value = "page") int page,
-			@DefaultValue("200") @QueryParam(value = "size") int size,
-			@DefaultValue("") @QueryParam(value = "filterBy") String filterBy,
-			@QueryParam(value = "orderBy") String orderBy) {
-		Response response = null;
-		if (page < 1 || size < 0) {
-			return Response.status(Status.BAD_REQUEST).build();
-		}
-		List<CarDto> list = this.carService.getCars(page, size, filterBy, orderBy).stream().map(car -> car.convertToDto())
-				.collect(Collectors.toList());
-
-		int perPage = list.size();
-		int total = this.carService.getCount(filterBy);
-		int pageCount = 1;
-		if (perPage < total && perPage > 0) {
-			pageCount = (total / perPage) + 1;
-		}
-		if (page > pageCount) {
-			return Response.status(Status.BAD_REQUEST).build();
-		}
-		LinkedHashMap<String, Object> carsMap = new LinkedHashMap<String, Object>();
-		carsMap.put("page", page);
-		carsMap.put("per_page", perPage);
-		carsMap.put("page_count", pageCount);
-		carsMap.put("total_count", total);
-		carsMap.put("cars", list);
-		response = Response.ok(carsMap).build();
-		return response;
+	public Response getCars(@DefaultValue("0") @QueryParam(value = "page") int page,
+			@DefaultValue("20") @QueryParam(value = "size") int size,
+		 @QueryParam(value = "filterBy") String filterBy,
+			@QueryParam(value = "orderBy") String orderBy,
+			@QueryParam(value= "sort") @DefaultValue("asc") String sort) {
+		
+		List<CarDto> cars = this.carService.getCars(page, size, filterBy, sort, orderBy).stream().map(car -> car.convertToDto()).collect(Collectors.toList());
+		
+		return Response.status(Status.OK).entity(cars).build();
 	}
 
 	@GET
@@ -89,7 +70,7 @@ public class CarResource implements ICarResource {
 			Response response = Response.status(Status.OK).entity(carDto).build();
 			return response;
 
-		} catch (CarNotFoundException ex) {
+		} catch (EntityNotFoundException ex) {
 			Response response = Response.status(Status.NOT_FOUND).build();
 
 			return response;
@@ -105,11 +86,11 @@ public class CarResource implements ICarResource {
 		try {
 
 			carDto.setId(id);
-			Car updateCarDto = carDto.convertToEntity();
-			Response response = Response.status(Status.OK).entity(this.carService.updateCar(updateCarDto)).build();
+			
+			Response response = Response.status(Status.OK).entity(this.carService.updateCar(carDto.convertToEntity())).build();
 			return response;
 
-		} catch (CarNotFoundException ex) {
+		} catch (EntityNotFoundException ex) {
 			Response response = Response.status(Status.NOT_FOUND).build();
 
 			return response;
@@ -137,7 +118,7 @@ public class CarResource implements ICarResource {
 			this.carService.deleteCar(id);
 			Response response = Response.status(Status.NO_CONTENT).build();
 			return response;
-		} catch (CarNotFoundException ex) {
+		} catch (EntityNotFoundException ex) {
 
 			Response response = Response.status(Status.NOT_FOUND).build();
 
@@ -145,5 +126,7 @@ public class CarResource implements ICarResource {
 		}
 
 	}
+
+	
 
 }

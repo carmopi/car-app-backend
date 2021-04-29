@@ -16,6 +16,14 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.modelmapper.ModelMapper;
+
+
+import com.carmen.app.dto.CountryDto;
+
+
+
+
 @Entity
 @Table(name = "country")
 public class Country implements Serializable {
@@ -41,8 +49,8 @@ public class Country implements Serializable {
 		
 	}
 	
-	public Country(String id, String name) {
-	this.id = id;
+	public Country(String name) {
+	
 	this.name = name;
 	}
 	
@@ -76,7 +84,13 @@ public class Country implements Serializable {
 		this.id = UUID.randomUUID().toString();
 	}
 	
-	
+	public CountryDto convertToDto() {
+		ModelMapper modelMapper = new ModelMapper();
+		CountryDto countryDto = modelMapper.map(this, CountryDto.class);
+		return countryDto;
+		
+	}
+
 
 	
 }

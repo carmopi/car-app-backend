@@ -1,14 +1,14 @@
 package com.carmen.app.control;
 
-import java.util.HashMap;
+
 import java.util.List;
 //import java.util.UUID;
-import java.util.Map;
+
 
 import javax.ejb.EJB;
-//import javax.ejb.EJB;
+
 import javax.ejb.Stateless;
-import javax.persistence.TypedQuery;
+
 
 //import javax.persistence.EntityManagerFactory;
 //import javax.persistence.Persistence;
@@ -17,7 +17,7 @@ import javax.persistence.TypedQuery;
 //import org.apache.log4j.Logger;
 
 import com.carmen.app.entities.Car;
-import com.carmen.app.exceptions.CarNotFoundException;
+import com.carmen.app.exceptions.EntityNotFoundException;
 import com.carmen.app.utils.Logged;
 
 /**
@@ -35,7 +35,7 @@ public class CarService {
 	private PersistenceService<Car, String> persistenceService;
 
 	
-	private Map<String,String> filter = new HashMap<String, String>();
+	
 		
 	/**
 	 * Obtain every car that exist in the system
@@ -45,25 +45,8 @@ public class CarService {
 	 * @param orderBy  {@link Car} Field to be ordered by.
 	 * @return cars List that contains all of the {@link Car} entities.
 	 */
-	public List<Car> getCars(int page, int size, String filterBy, String orderBy) {
-		filter.put("brand", filterBy);
-		filter.put("registration", filterBy);
-		TypedQuery<Car> query = this.persistenceService.getAll(Car.class, filter, orderBy);
-		query.setFirstResult((size * page) - size);
-		query.setMaxResults(size);
-		return query.getResultList();
-	}
-
-	/**
-	 * 
-	 * Obtain number of cars filtered by name and registration.
-	 * 
-	 * @param filterBy {@link Car} Field to be filtered by
-	 * @return List that contains all of the {@link Car} entities filtered by name
-	 *         and registration.
-	 */
-	public int getCount(String filterBy) {
-		return this.persistenceService.getAll(Car.class, filter, "").getResultList().size();
+	public List<Car> getCars(int page, int size, String filterBy,String sort, String orderBy) {
+		return this.persistenceService.getAll(Car.class, sort, size, page, filterBy, orderBy);
 	}
 
 	
@@ -78,11 +61,11 @@ public class CarService {
 	 *                              entity of the database
 	 */
 
-	public Car getCar(String id) throws CarNotFoundException {
+	public Car getCar(String id) throws EntityNotFoundException {
 
 		Car car = this.persistenceService.getById(Car.class, id);
 		if (car == null) {
-			throw new CarNotFoundException("Car with id " + id + " not found");
+			throw new EntityNotFoundException("Car with id " + id + " not found");
 
 		}
 		return car;
@@ -112,9 +95,11 @@ public class CarService {
 	 *                              entity of the database
 	 */
 
-	public Car updateCar(Car car) throws CarNotFoundException {
-		getCar(car.getId());
-
+	public Car updateCar(Car car) throws EntityNotFoundException {
+		Car carToUpdate = getCar(car.getId());
+		if(carToUpdate == null) {
+			throw new EntityNotFoundException("Car with id " + car.getId() + " not found");
+		}
 		car = this.persistenceService.updateOne(car);
 		
 		return car;
@@ -130,7 +115,7 @@ public class CarService {
 	 *                              entity of the database
 	 */
 
-	public void deleteCar(String id) throws CarNotFoundException {
+	public void deleteCar(String id) throws EntityNotFoundException {
 		Car car = this.getCar(id);
 		this.persistenceService.deleteOne(car);
 	}

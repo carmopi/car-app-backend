@@ -1,8 +1,8 @@
 package com.carmen.app.control;
 
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Map;
+
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -10,7 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
+
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -33,28 +33,35 @@ public class PersistenceService<T, K> {
 	@PersistenceContext(unitName = "carP")
 	private EntityManager em;
 
-	public TypedQuery<T> getAll(Class<T> c, Map<String, String> filterMap, String orderBy) {
+	public List<T> getAll(Class<T> c, String sort, int size, int page, String filterBy, String orderBy) {
+		
+		if(sort == null || sort.trim().isEmpty()) sort="asc";	
+		if(orderBy == null || orderBy.trim().isEmpty()) orderBy = "id";
+		if(page <= 0) page = 0; 
+		if(size <= 0 || size >= 20) size = 10;
+		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(c);
+		
 		Root<T> r = cq.from(c);
-		cq.select(r);
-		List<Predicate> predicates = new ArrayList<Predicate>();
-		for (Map.Entry<String, String> entry : filterMap.entrySet()) {
-			Expression<String> key = cb.lower(r.get(entry.getKey()).as(String.class));
-			String value = String.format("%%%s%%", entry.getValue().toLowerCase());
-			predicates.add(cb.like(key, value));
+		
+		if(filterBy != null) {
+			Predicate brandPredicate = cb.like(r.get("brand").get("name"), filterBy);
+			Predicate countryPredicate = cb.like(r.get("country").get("name"), filterBy);
+			Predicate merge = cb.or(brandPredicate, countryPredicate);
+
+			cq.where(merge);
 		}
-		Predicate predicate = cb.or(predicates.toArray(new Predicate[0]));
-		cq.where(predicate);
-		if (orderBy != null && !orderBy.isEmpty()) {
-			if (orderBy.charAt(0) == '-') {
-				cq.orderBy(cb.desc(r.get(orderBy.substring(1))));
-			} else {
-				cq.orderBy(cb.asc(r.get(orderBy)));
-			}
-		}
+		
+		if(sort == "asc")
+			cq.orderBy(cb.asc(r.get(orderBy)));
+		else
+			cq.orderBy(cb.desc(r.get(orderBy)));
+		
+	
 		TypedQuery<T> query = this.em.createQuery(cq);
-		return query;
+		
+		return query.getResultList();
 	}
 
 	public T getById(Class<T> c, K id) {

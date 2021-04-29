@@ -1,8 +1,5 @@
 package com.carmen.app.boundary;
 
-import java.util.List;
-//import java.util.UUID;
-
 import javax.ws.rs.core.Response;
 
 import com.carmen.app.dto.CarDto;
@@ -20,21 +17,27 @@ public interface ICarResource {
 	/**
 	 * 
 	 * Get a list of cars existing in the database
-	 * @param page number of the pagination
-	 * @param size number of cars
-	 * @param filter field to filter
-	 * @param sort  field to order
+	 * 
+	 * @param page   number of the pagination
+	 * @param size   number of cars
+	 * @param filterBy field to filter
+	 * @param sort   field to sort
+	 * @param orderBy field to order
 	 * 
 	 * @return response that contains a list with all cars values
 	 */
 	@Operation(summary = "Get all cars", responses = {
 			@ApiResponse(responseCode = "200", description = "Get all cars", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))) })
-	public Response getCars(int page, int size, String filter, String orderBy);
+	public Response getCars(@Parameter(description = "pages", required = false) int page,
+			@Parameter(description = "size of data in one page", required = false) int size,
+			@Parameter(description = "value to be searched", required = false) String filterBy,
+			@Parameter(description = "value to be order", required = false) String orderBy,
+			@Parameter(description = "how data will be sorted", required = false) String sort);
 
 	/**
 	 * Get a car with a given id
 	 * 
-	 * @param id that belongs to a {@link CarDto} 
+	 * @param id that belongs to a {@link CarDto}
 	 * @return response that contains either the car or code 404 if the id does not
 	 *         match with any car in the database
 	 */
@@ -49,10 +52,10 @@ public interface ICarResource {
 	 * 
 	 * @param id  of the car
 	 * @param car {@link CarDto} to be updated
-	 * @return response that contains the update of {@link CarDto} and the code 200, if
-	 *         there is no car with the given id the response contains the code 404
-	 *         and if the request body contains errors, the response contains the
-	 *         status code 400
+	 * @return response that contains the update of {@link CarDto} and the code 200,
+	 *         if there is no car with the given id the response contains the code
+	 *         404 and if the request body contains errors, the response contains
+	 *         the status code 400
 	 */
 	@Operation(summary = "Update a car", responses = {
 			@ApiResponse(responseCode = "201", description = "Car update", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))),
@@ -64,7 +67,7 @@ public interface ICarResource {
 	/**
 	 * Create a {@link CarDto} form the request body
 	 * 
-	 * @param car {@link CarDto}  to create
+	 * @param car {@link CarDto} to create
 	 * @return response that contains either the created car and status code 200 of
 	 *         there are errors in the request body the response contains status
 	 *         code 400
