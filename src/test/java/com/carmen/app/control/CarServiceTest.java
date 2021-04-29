@@ -1,4 +1,4 @@
-/*package com.carmen.app.control;
+package com.carmen.app.control;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -26,7 +26,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.carmen.app.entities.Brand;
 import com.carmen.app.entities.Car;
-import com.carmen.app.exceptions.CarNotFoundException;
+import com.carmen.app.entities.Country;
+import com.carmen.app.exceptions.EntityNotFoundException;
 import com.google.common.base.Verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -43,7 +44,7 @@ public class CarServiceTest {
 	
 	private Car car;
 	
-	private Brand brand;
+
 
 	private String id = "dff6b9ba-8579-11eb-8dcd-0242ac130003";
 
@@ -51,9 +52,11 @@ public class CarServiceTest {
 	public void setUp() throws Exception {
 		car = new Car();
 		car.setId(id);
-		brand.setBrandName("Ford");
-		country.setCountry("USA");
+		car.setBrand(new Brand("BMW"));
+		car.setCountry(new Country("Germany"));
+		car.setCreatedAt(LocalDateTime.now());
 		car.setRegistration(LocalDateTime.now());
+		car.setLastUpdate(LocalDateTime.now());
 	}
 
 	@Test
@@ -65,22 +68,23 @@ public class CarServiceTest {
 
 	@Test
 	public void testGetCars() {
-		when(this.persistenceService.getAll(Mockito.eq(Car.class),Mockito.anyMap(),Mockito.anyString())).thenReturn(query);
 		List<Car> expectedCars = new ArrayList<Car>();
-		List<Car> cars = this.carService.getCars(1 , 2, "Seat", "brand");
+		when(this.persistenceService.getAll(Mockito.eq(Car.class),Mockito.anyString(),Mockito.anyInt(),Mockito.anyInt(), Mockito.anyString(), Mockito.anyString())).thenReturn(expectedCars);
+		
+		List<Car> cars = this.carService.getCars(1 , 2, "Seat", "brand", "dff6b9ba-8579-11eb-8dcd-0242ac130003");
 		assertEquals(expectedCars, cars);
 
 	}
 
 	@Test
-	public void testGetACar() throws CarNotFoundException {
+	public void testGetACar() throws EntityNotFoundException {
 		when(this.persistenceService.getById(Car.class, id)).thenReturn(car);
 		assertEquals(car, carService.getCar(id));
 		verify(this.persistenceService).getById(Car.class, id);
 	}
 
 	@Test
-	public void testUpdateCar() throws CarNotFoundException {
+	public void testUpdateCar() throws EntityNotFoundException {
 		when(this.persistenceService.getById(Car.class, id)).thenReturn(car);
 		when(this.persistenceService.updateOne(car)).thenReturn(car);
 		assertEquals(car, carService.updateCar(car));
@@ -88,7 +92,7 @@ public class CarServiceTest {
 	}
 
 	@Test
-	public void testDeleteCar() throws CarNotFoundException {
+	public void testDeleteCar() throws EntityNotFoundException {
 		when(this.persistenceService.getById(Car.class, id)).thenReturn(car);
 		doNothing().when(this.persistenceService).deleteOne(car);
 		carService.deleteCar(id);
@@ -96,8 +100,8 @@ public class CarServiceTest {
 
 	}
 
-	@Test(expected = CarNotFoundException.class)
-	public void testGetWrongCar() throws CarNotFoundException {
+	@Test(expected = EntityNotFoundException.class)
+	public void testGetWrongCar() throws EntityNotFoundException {
 		// String carId = "f5b4afda-870b-11eb-8dcd-0242ac130003";
 		when(this.persistenceService.getById(Car.class, id)).thenReturn(null);
 		carService.getCar(id);
@@ -105,16 +109,16 @@ public class CarServiceTest {
 
 	}
 
-	@Test(expected = CarNotFoundException.class)
-	public void testUpdateWrongCar() throws CarNotFoundException {
+	@Test(expected = EntityNotFoundException.class)
+	public void testUpdateWrongCar() throws EntityNotFoundException {
 		when(this.persistenceService.getById(Car.class, id)).thenReturn(null);
 		carService.updateCar(car);
 		verify(this.persistenceService.getById(Car.class, id));
 
 	}
 
-	@Test(expected = CarNotFoundException.class)
-	public void testDeleteWrongCar() throws CarNotFoundException {
+	@Test(expected = EntityNotFoundException.class)
+	public void testDeleteWrongCar() throws EntityNotFoundException {
 		when(this.persistenceService.getById(Car.class, id)).thenReturn(null);
 		carService.deleteCar(id);
 		verify(this.persistenceService.getById(Car.class, id));
@@ -122,4 +126,4 @@ public class CarServiceTest {
 	}
 
 }
-*/
+
