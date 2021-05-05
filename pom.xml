@@ -82,6 +82,11 @@
 			<version>2.3.8</version>
 		</dependency>
 
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
 
 	</dependencies>
 	<build>
@@ -112,7 +117,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.3.1</version>
 				<configuration>
-					<outputDirectory>C:\Program Files\payara5\glassfish\domains\domain1\autodeploy</outputDirectory>
+					<outputDirectory>C:\ProgramFiles\payara5\glassfish\domains\domain1\autodeploy</outputDirectory>
 				</configuration>
 			</plugin>
 

@@ -17,9 +17,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.SecurityContext;
 
 //import org.apache.log4j.LogManager;
 //import org.apache.log4j.Logger;
@@ -30,6 +32,7 @@ import com.carmen.app.entities.Car;
 import com.carmen.app.exceptions.EntityNotFoundException;
 
 import com.carmen.app.utils.Logged;
+import com.carmen.app.utils.Secured;
 
 
 /**
@@ -48,16 +51,29 @@ public class CarResource implements ICarResource {
 	@EJB
 	private CarService carService;
 
+	
+	@Context
+	SecurityContext securityContext;
+	
+	
 	@GET
+	@Secured
+	
 	public Response getCars(@DefaultValue("0") @QueryParam(value = "page") int page,
 			@DefaultValue("20") @QueryParam(value = "size") int size,
 		 @QueryParam(value = "filterBy") String filterBy,
 			@QueryParam(value = "orderBy") String orderBy,
 			@QueryParam(value= "sort") @DefaultValue("asc") String sort) {
 		
-		List<CarDto> cars = this.carService.getCars(page, size, filterBy, sort, orderBy).stream().map(car -> car.convertToDto()).collect(Collectors.toList());
+		if(securityContext.isUserInRole("user")) {
+			List<CarDto> cars = this.carService.getCars(page, size, filterBy, sort, orderBy).stream().map(car -> car.convertToDto()).collect(Collectors.toList());
 		
 		return Response.status(Status.OK).entity(cars).build();
+		}
+		else {
+			return Response.status(Status.UNAUTHORIZED).build();
+		}
+		
 	}
 
 	@GET
