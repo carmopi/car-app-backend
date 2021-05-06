@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
 
+import com.carmen.app.utils.Secured;
 import com.google.common.net.HttpHeaders;
 
 import io.jsonwebtoken.Claims;
@@ -28,6 +29,7 @@ import io.jsonwebtoken.impl.crypto.MacProvider;
  */
 @Provider
 @Priority(Priorities.AUTHENTICATION)
+@Secured
 public class JwtFilter implements ContainerRequestFilter {
 
 	public static final Key KEY = MacProvider.generateKey();
@@ -50,10 +52,6 @@ public class JwtFilter implements ContainerRequestFilter {
 
 			roles = (String) claims.getBody().get("roles");
 			
-			if (!roles.equalsIgnoreCase("user") && !roles.equalsIgnoreCase("admin")) {
-				requestContext.abortWith(Response.status(Status.UNAUTHORIZED).build());
-
-			}
 
 		} catch (Exception e) {
 			requestContext.abortWith(Response.status(Status.UNAUTHORIZED).build());

@@ -45,6 +45,7 @@ import com.carmen.app.utils.Secured;
 @Path("/cars")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+
 @Logged
 public class CarResource implements ICarResource {
 
@@ -65,7 +66,7 @@ public class CarResource implements ICarResource {
 			@QueryParam(value = "orderBy") String orderBy,
 			@QueryParam(value= "sort") @DefaultValue("asc") String sort) {
 		
-		if(securityContext.isUserInRole("user")) {
+		if(securityContext.isUserInRole("username") || securityContext.isUserInRole("admin")) {
 			List<CarDto> cars = this.carService.getCars(page, size, filterBy, sort, orderBy).stream().map(car -> car.convertToDto()).collect(Collectors.toList());
 		
 		return Response.status(Status.OK).entity(cars).build();
@@ -78,27 +79,32 @@ public class CarResource implements ICarResource {
 
 	@GET
 	@Path("/{id}")
-
+	@Secured
 	public Response getCar(@PathParam("id") String id) {
-
+		if(securityContext.isUserInRole("username") || securityContext.isUserInRole("admin")) {
 		try {
 			CarDto carDto = this.carService.getCar(id).convertToDto();
-			Response response = Response.status(Status.OK).entity(carDto).build();
-			return response;
+			return Response.status(Status.OK).entity(carDto).build();
+			
 
 		} catch (EntityNotFoundException ex) {
-			Response response = Response.status(Status.NOT_FOUND).build();
+			return Response.status(Status.NOT_FOUND).build();
 
-			return response;
+			
+		}
+		}else {
+			return Response.status(Status.UNAUTHORIZED).build();
 		}
 
 	}
 
 	@PUT
 	@Path("/{id}")
-
+	@Secured
 	public Response updateCar(@PathParam("id") String id, CarDto carDto) {
-
+		if(securityContext.isUserInRole("admin")) {
+			
+		
 		try {
 
 			carDto.setId(id);
@@ -110,35 +116,46 @@ public class CarResource implements ICarResource {
 			Response response = Response.status(Status.NOT_FOUND).build();
 
 			return response;
-
+}
+		}else {
+			return Response.status(Status.UNAUTHORIZED).build();
 		}
 
 	}
 
 	@POST
-
+	@Secured
 	public Response createdCar(CarDto carDto) {
 
+		if(securityContext.isUserInRole("admin")) {
+			
+		
 		this.carService.createCar(carDto.convertToEntity()).convertToDto();
 		Response response = Response.status(Status.CREATED).entity(carDto).build();
 
 		return response;
+		}else {
+			return Response.status(Status.UNAUTHORIZED).build();
+		}
 	}
 
 	@DELETE
+	@Secured
 	@Path("/{id}")
 
 	public Response deleteCar(@PathParam("id") String id) {
-
+		if(securityContext.isUserInRole("admin")) {
 		try {
 			this.carService.deleteCar(id);
-			Response response = Response.status(Status.NO_CONTENT).build();
-			return response;
+			return Response.status(Status.NO_CONTENT).build();
+			
 		} catch (EntityNotFoundException ex) {
 
-			Response response = Response.status(Status.NOT_FOUND).build();
+			return Response.status(Status.NOT_FOUND).build();
 
-			return response;
+		}
+		}else {
+			return Response.status(Status.UNAUTHORIZED).build();
 		}
 
 	}

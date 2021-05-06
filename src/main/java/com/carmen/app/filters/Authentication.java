@@ -24,17 +24,17 @@ import io.jsonwebtoken.SignatureAlgorithm;
  */
 @Path("/authenticatiton")
 public class Authentication {
-
-
+	
+	
 	@POST
 	public Response authenticateUser(@QueryParam("username") String username,@QueryParam("password") String password) {
 		
 		try {
-			authenticate(username,password);
+			String roles = authenticate(username,password);
 			
-			String token = generateToken(username);
+			String token = generateToken(username, roles);
 			
-			return Response.ok().header(HttpHeaders.AUTHORIZATION, token).build();
+			return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + token).build();
 			
 		}catch(Exception e) {
 			
@@ -42,7 +42,7 @@ public class Authentication {
 		}
 	}
 
-	private String generateToken(String username) {
+	private String generateToken(String username, String roles) {
 		Date creation = new Date();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(creation);
@@ -51,7 +51,8 @@ public class Authentication {
 		
 		String jwtToken = Jwts.builder()
 				.setSubject(username)
-				.setIssuer("http://localhost:8080/car-app/authentication")
+				.claim("roles", roles)
+				.setIssuer("Carmen")
 				.setIssuedAt(creation)
 				.setExpiration(expired)
 				.signWith(SignatureAlgorithm.HS512, JwtFilter.KEY)
