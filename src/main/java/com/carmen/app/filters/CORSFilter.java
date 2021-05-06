@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
-import javax.ws.rs.core.MultivaluedMap;
+
 import javax.ws.rs.ext.Provider;
 
 
@@ -20,5 +20,6 @@ public class CORSFilter implements ContainerResponseFilter{
         responseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
         responseContext.getHeaders().add("Access-Control-Allow-Headers","*");
         responseContext.getHeaders().add("Access-Control-Allow-Methods", "*");
+        responseContext.getHeaders().add("Access-Control-Expose-Headers", "Authorization");
     }
 }
