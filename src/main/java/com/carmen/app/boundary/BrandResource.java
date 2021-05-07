@@ -1,9 +1,6 @@
 package com.carmen.app.boundary;
 
-
-
 import java.util.List;
-//import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
@@ -23,143 +20,138 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
-//import org.apache.log4j.LogManager;
-//import org.apache.log4j.Logger;
+import com.carmen.app.control.BrandService;
+import com.carmen.app.dto.BrandDto;
 
-import com.carmen.app.control.CarService;
-import com.carmen.app.dto.CarDto;
-import com.carmen.app.entities.Car;
 import com.carmen.app.exceptions.EntityNotFoundException;
-
 import com.carmen.app.utils.Logged;
 import com.carmen.app.utils.Secured;
 
-
 /**
- * 
- * Resource that maps {@link Car} API to a method
  * 
  * @author Carmen Piñera Moreno
  *
  */
-@Path("/cars")
+
+
+@Path("/brands")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-
 @Logged
-public class CarResource implements ICarResource {
+public class BrandResource implements IBrandResource {
 
-	@EJB
-	private CarService carService;
-
+	@EJB 
+	private BrandService brandService;
+	
 	
 	@Context
 	SecurityContext securityContext;
 	
-	
 	@GET
 	@Secured
-	
-	public Response getCars(@DefaultValue("0") @QueryParam(value = "page") int page,
+	public Response getBrands(@DefaultValue("0") @QueryParam(value = "page") int page,
 			@DefaultValue("20") @QueryParam(value = "size") int size,
 		 @QueryParam(value = "filterBy") String filterBy,
 			@QueryParam(value = "orderBy") String orderBy,
 			@QueryParam(value= "sort") @DefaultValue("asc") String sort) {
 		
 		if(securityContext.isUserInRole("username") || securityContext.isUserInRole("admin")) {
-			List<CarDto> cars = this.carService.getCars(page, size, filterBy, sort, orderBy).stream().map(car -> car.convertToDto()).collect(Collectors.toList());
+		List<BrandDto> brands = this.brandService.getBrands(page, size, filterBy, sort, orderBy).stream().map(brand -> brand.convertToDto()).collect(Collectors.toList());
 		
-		return Response.status(Status.OK).entity(cars).build();
+		return Response.status(Status.OK).entity(brands).build();
 		}
 		else {
 			return Response.status(Status.UNAUTHORIZED).build();
-		}
-		
-	}
 
+		}
+	}
+	
 	@GET
 	@Path("/{id}")
 	@Secured
-	public Response getCar(@PathParam("id") String id) {
+	public Response getBrand(@PathParam("id") String id) {
 		if(securityContext.isUserInRole("username") || securityContext.isUserInRole("admin")) {
 		try {
-			CarDto carDto = this.carService.getCar(id).convertToDto();
-			return Response.status(Status.OK).entity(carDto).build();
+			BrandDto brandDto = this.brandService.getBrand(id).convertToDto();
+			return Response.status(Status.OK).entity(brandDto).build();
 			
-
-		} catch (EntityNotFoundException ex) {
+		}catch (EntityNotFoundException ex) {
 			return Response.status(Status.NOT_FOUND).build();
-
-			
 		}
 		}else {
 			return Response.status(Status.UNAUTHORIZED).build();
-		}
 
+		}
+		
 	}
+	
 
 	@PUT
 	@Path("/{id}")
 	@Secured
-	public Response updateCar(@PathParam("id") String id, CarDto carDto) {
+	public Response updateBrand(@PathParam("id") String id, BrandDto brandDto) {
 		if(securityContext.isUserInRole("admin")) {
-			
-		
+
 		try {
 
-			carDto.setId(id);
+			brandDto.setId(id);
 			
-			Response response = Response.status(Status.OK).entity(this.carService.updateCar(carDto.convertToEntity())).build();
-			return response;
+			return Response.status(Status.OK).entity(this.brandService.updateBrand(brandDto.convertToEntity())).build();
+			
 
 		} catch (EntityNotFoundException ex) {
-			Response response = Response.status(Status.NOT_FOUND).build();
+		return Response.status(Status.NOT_FOUND).build();
 
-			return response;
-}
+		
+		}
+		
 		}else {
 			return Response.status(Status.UNAUTHORIZED).build();
+
 		}
-
+		
 	}
-
+	
 	@POST
 	@Secured
-	public Response createdCar(CarDto carDto) {
-
+	public Response createdBrand(BrandDto brandDto) {
 		if(securityContext.isUserInRole("admin")) {
-			
-		
-		this.carService.createCar(carDto.convertToEntity()).convertToDto();
-		Response response = Response.status(Status.CREATED).entity(carDto).build();
+
+		this.brandService.createBrand(brandDto.convertToEntity()).convertToDto();
+		Response response = Response.status(Status.CREATED).entity(brandDto).build();
 
 		return response;
-		}else {
+		}
+		else {
 			return Response.status(Status.UNAUTHORIZED).build();
+
 		}
 	}
 
 	@DELETE
-	@Secured
 	@Path("/{id}")
-
-	public Response deleteCar(@PathParam("id") String id) {
+	@Secured
+	public Response deleteBrand(@PathParam("id") String id) {
 		if(securityContext.isUserInRole("admin")) {
+
 		try {
-			this.carService.deleteCar(id);
+			this.brandService.deleteBrand(id);
 			return Response.status(Status.NO_CONTENT).build();
-			
+		
 		} catch (EntityNotFoundException ex) {
 
 			return Response.status(Status.NOT_FOUND).build();
 
 		}
+		
 		}else {
 			return Response.status(Status.UNAUTHORIZED).build();
+
 		}
 
 	}
 
 	
-
+	
+	
 }

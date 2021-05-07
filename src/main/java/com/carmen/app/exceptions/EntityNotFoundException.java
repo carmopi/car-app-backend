@@ -1,13 +1,13 @@
 package com.carmen.app.exceptions;
 
-public class CarNotFoundException extends Exception{
+public class EntityNotFoundException extends Exception{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public CarNotFoundException(String message) {
+	public EntityNotFoundException(String message) {
 		super(message);
 	}
 }

@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 
 import org.modelmapper.ModelMapper;
 
+import com.carmen.app.entities.Brand;
 import com.carmen.app.entities.Car;
+import com.carmen.app.entities.Country;
 
 
 
@@ -24,28 +26,28 @@ public class CarDto implements Serializable {
 	
 	
 	private String id;
-	private String brand;
+	private Brand brand;
 	private LocalDateTime registration;
-	private String country;
-	private LocalDateTime createAt;
+	private Country country;
+	private LocalDateTime createdAt;
 	private LocalDateTime lastUpdate;
 	
 	public CarDto() {
 		
 	}
 	
-	public CarDto(String brand, LocalDateTime registration, String country) {
+	public CarDto(Brand brand, LocalDateTime registration, Country country) {
 		this.brand = brand;
 		this.registration = registration;
 		this.country = country;
 	}
 	
 	
-	public LocalDateTime getCreateAt() {
-		return createAt;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
-	public void setCreateAt(LocalDateTime createAt) {
-		this.createAt = createAt;
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
 	public LocalDateTime getLastUpdate() {
 		return lastUpdate;
@@ -59,10 +61,10 @@ public class CarDto implements Serializable {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getBrand() {
+	public Brand getBrand() {
 		return brand;
 	}
-	public void setBrand(String brand) {
+	public void setBrand(Brand brand) {
 		this.brand = brand;
 	}
 	public LocalDateTime getRegistration() {
@@ -71,10 +73,10 @@ public class CarDto implements Serializable {
 	public void setRegistration(LocalDateTime registration) {
 		this.registration = registration;
 	}
-	public String getCountry() {
+	public Country getCountry() {
 		return country;
 	}
-	public void setCountry(String country) {
+	public void setCountry(Country country) {
 		this.country = country;
 	}
 	
