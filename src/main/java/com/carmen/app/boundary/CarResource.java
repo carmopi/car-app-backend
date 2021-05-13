@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
+
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -30,7 +32,7 @@ import com.carmen.app.control.CarService;
 import com.carmen.app.dto.CarDto;
 import com.carmen.app.entities.Car;
 import com.carmen.app.exceptions.EntityNotFoundException;
-
+import com.carmen.app.jms.Publisher;
 import com.carmen.app.utils.Logged;
 import com.carmen.app.utils.Secured;
 
@@ -49,13 +51,15 @@ import com.carmen.app.utils.Secured;
 @Logged
 public class CarResource implements ICarResource {
 
-	@EJB
+	@Inject
 	private CarService carService;
 
 	
 	@Context
 	SecurityContext securityContext;
 	
+	@Inject
+	private Publisher publisher;
 	
 	@GET
 	@Secured
@@ -110,6 +114,8 @@ public class CarResource implements ICarResource {
 			carDto.setId(id);
 			
 			Response response = Response.status(Status.OK).entity(this.carService.updateCar(carDto.convertToEntity())).build();
+			
+			publisher.send(carDto.getId());
 			return response;
 
 		} catch (EntityNotFoundException ex) {
