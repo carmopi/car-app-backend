@@ -1,6 +1,7 @@
 package com.carmen.app.control;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 //import java.util.UUID;
 
@@ -8,7 +9,7 @@ import java.util.List;
 import javax.ejb.EJB;
 
 import javax.ejb.Stateless;
-
+import javax.transaction.Transactional;
 
 //import javax.persistence.EntityManagerFactory;
 //import javax.persistence.Persistence;
@@ -19,6 +20,8 @@ import javax.ejb.Stateless;
 import com.carmen.app.entities.Car;
 import com.carmen.app.exceptions.EntityNotFoundException;
 import com.carmen.app.utils.Logged;
+
+import jdk.internal.org.jline.utils.Log;
 
 /**
  * 
@@ -119,5 +122,22 @@ public class CarService {
 		Car car = this.getCar(id);
 		this.persistenceService.deleteOne(car);
 	}
+	
+	
+	@Transactional
+	public Car softDelete(String id) throws EntityNotFoundException {
+		Car carToDelete = this.persistenceService.getById(Car.class, id);
+		if(carToDelete == null) {
+			return null;
+		}else {
+			carToDelete.setToDelete(true);
+			this.persistenceService.updateOne(carToDelete);
+			return carToDelete;
+		}
+	}
+	
+	public void deleteMarkedCars() {
+		this.persistenceService.executeNamedQuery("Car.deletedMarkedCars");
+		}
 
 }

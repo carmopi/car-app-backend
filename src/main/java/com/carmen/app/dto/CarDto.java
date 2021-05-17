@@ -31,6 +31,9 @@ public class CarDto implements Serializable {
 	private Country country;
 	private LocalDateTime createdAt;
 	private LocalDateTime lastUpdate;
+	private boolean deleted;
+	
+	
 	
 	public CarDto() {
 		
@@ -80,6 +83,17 @@ public class CarDto implements Serializable {
 		this.country = country;
 	}
 	
+	
+	
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public Car convertToEntity() {
 		ModelMapper modelMapper = new ModelMapper();
 		Car car = modelMapper.map(this, Car.class);
