@@ -51,7 +51,7 @@ import com.carmen.app.utils.Secured;
 @Logged
 public class CarResource implements ICarResource {
 
-	@Inject
+	@EJB
 	private CarService carService;
 
 	
@@ -152,7 +152,8 @@ public class CarResource implements ICarResource {
 	public Response deleteCar(@PathParam("id") String id) {
 		if(securityContext.isUserInRole("admin")) {
 		try {
-			this.carService.deleteCar(id);
+			//this.carService.deleteCar(id);
+			this.carService.softDelete(id);
 			return Response.status(Status.NO_CONTENT).build();
 			
 		} catch (EntityNotFoundException ex) {

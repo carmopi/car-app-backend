@@ -15,8 +15,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
-
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import com.carmen.app.dto.CarDto;
 import org.modelmapper.ModelMapper;
@@ -29,7 +30,11 @@ import org.modelmapper.ModelMapper;
  */
 @Entity
 @Table(name = "cars")
-@NamedQuery(name = "Car.FindCars", query = "SELECT a FROM Car a")
+@NamedQueries({
+@NamedQuery(name = "Car.FindCars", query = "SELECT a FROM Car a"),
+@NamedQuery(name = "Car.deletedMarkedCars", query = "DELETE FROM Car c WHERE c.deleted = true")
+})
+
 public class Car implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -61,6 +66,9 @@ public class Car implements Serializable {
 	@Column(name = "lastupdate")
 	@UpdateTimestamp
 	private LocalDateTime lastUpdate;
+	
+	@Column(name = "deleted")
+	private boolean deleted;
 
 	public Car() {
 
@@ -120,6 +128,15 @@ public class Car implements Serializable {
 
 	public void setLastUpdate(LocalDateTime lastUpdate) {
 		this.lastUpdate = lastUpdate;
+	}
+
+	
+	public boolean isdeleted() {
+		return deleted;
+	}
+
+	public void setToDelete(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	@PrePersist
