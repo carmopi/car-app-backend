@@ -8,8 +8,9 @@
 	<packaging>war</packaging>
 	<properties>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<jakartaee>8.0.1</jakartaee>
 	</properties>
 	<dependencies>
 
@@ -88,6 +89,7 @@
 			<version>0.9.1</version>
 		</dependency>
 
+		
 	</dependencies>
 	<build>
 		<plugins>
@@ -115,17 +117,16 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>3.3.1</version>
+				<version>3.1.0</version>
 				<configuration>
-					<!--  <outputDirectory>C:\ProgramFiles\payara5\glassfish\domains\domain1\autodeploy</outputDirectory>--> 
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<!-- <outputDirectory>C:\ProgramFiles\payara5\glassfish\domains\domain1\autodeploy</outputDirectory> -->
 				</configuration>
 			</plugin>
 
-
 		</plugins>
 
-
-
-
 	</build>
+	
+
 </project>
