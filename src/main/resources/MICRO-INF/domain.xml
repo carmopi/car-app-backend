@@ -59,7 +59,7 @@
 			datasource-classname="org.postgresql.ds.PGSimpleDataSource"
 			name="postgrespool" res-type="javax.sql.DataSource">
 			<property name="password" value="179405"></property>
-			<property name="serverName" value="localhost"></property>
+			<property name="serverName" value="172.26.80.1"></property>
 			<property name="user" value="postgres"></property>
 		</jdbc-connection-pool>
 		<jdbc-resource pool-name="postgrespool"

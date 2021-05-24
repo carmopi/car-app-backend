@@ -1,0 +1,1 @@
+java -jar payara-micro-5.2021.3.jar --deploy activemq-rar-5.16.2.rar --domainconfig domain.xml --deploy car-app-1.0.0-SNAPSHOT.war --port 8081
